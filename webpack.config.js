@@ -1,4 +1,5 @@
 const path = require("path");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -16,6 +17,10 @@ module.exports = {
     contentBase: path.join("./dist"),
     publicPath: "/"
   },
+
+  plugins: [
+    new Dotenv()
+  ],
 
   module: {
     rules: [

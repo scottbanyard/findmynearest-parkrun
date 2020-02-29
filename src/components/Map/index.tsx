@@ -3,7 +3,7 @@ import ReactMapGL, { GeolocateControl } from 'react-map-gl';
 import styled from "styled-components";
 import { IMapState, IViewport } from "./types";
 
-const TOKEN = 'pk.eyJ1Ijoic2NvdHRiYW55YXJkIiwiYSI6ImNrNzdyMXhxaDAzc3AzZG1wazlnNXd5MTYifQ.VsYKGqQ7jR8gjSpv27Mb-g';
+const TOKEN = process.env.MAPBOX_TOKEN;
 
 const defaultState: IMapState = {
   viewport: {
