@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, { GeolocateControl } from 'react-map-gl';
 import styled from "styled-components";
 import { IMapState, IViewport } from "./types";
 
@@ -7,8 +7,8 @@ const TOKEN = 'pk.eyJ1Ijoic2NvdHRiYW55YXJkIiwiYSI6ImNrNzdyMXhxaDAzc3AzZG1wazlnNX
 
 const defaultState: IMapState = {
   viewport: {
-    latitude: 37.785164,
-    longitude: -100,
+    latitude: 51.5074,
+    longitude: 0.1278,
     zoom: 2.8,
     bearing: 0,
     pitch: 0,
@@ -16,6 +16,13 @@ const defaultState: IMapState = {
     height: "50vh"
   }
 }
+
+const StyledGeolocateControl = styled(GeolocateControl)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+`;
 
 export default class Map extends React.Component {
   state = defaultState;
@@ -34,6 +41,10 @@ export default class Map extends React.Component {
         mapStyle="mapbox://styles/mapbox/dark-v9"
         mapboxApiAccessToken={ TOKEN }
         onViewportChange={ this.updateViewport }>
+          <StyledGeolocateControl
+            positionOptions={{ enableHighAccuracy: true }}
+            trackUserLocation={ true }
+          />
       </ReactMapGL>
     );
   }
