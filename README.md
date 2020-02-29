@@ -8,7 +8,7 @@ A mapping application that allows you to find your nearest parkrun from a given 
 - Run `npm install`
 - Request a free Mapbox access token by <a href="https://account.mapbox.com/auth/signup/" target="_blank">signing up</a>
 - Create a file called `.env` in the root of this repository
-- Add in the variable `MAPBOX_TOKEN` and insert your Mapbox access token (e.g. MAPBOX_TOKEN="example token")
+- Open the `.env` file and insert the variable `MAPBOX_TOKEN` with your Mapbox access token (e.g. MAPBOX_TOKEN="example token")
 - Run `npm start` to get started!
 
 ### Tech Used
