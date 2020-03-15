@@ -1,5 +1,6 @@
 export interface IMapState {
   viewport: IViewport;
+  error?: string;
 }
 
 export interface IViewport {

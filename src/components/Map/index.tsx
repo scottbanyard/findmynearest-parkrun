@@ -1,7 +1,8 @@
 import * as React from "react";
-import ReactMapGL, { GeolocateControl } from 'react-map-gl';
-import styled from "styled-components";
+import ReactMapGL from 'react-map-gl';
 import { IMapState, IViewport } from "./types";
+import { Container, StyledGeolocateControl, StyledErrorTypography } from "./styles";
+import axios from "axios";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -12,17 +13,11 @@ const defaultState: IMapState = {
     zoom: 2.8,
     bearing: 0,
     pitch: 0,
-    width: "80vw",
-    height: "50vh"
-  }
+    width: "100%",
+    height: "50vh",
+  },
+  error: undefined
 }
-
-const StyledGeolocateControl = styled(GeolocateControl)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-`;
 
 export default class Map extends React.Component {
   state = defaultState;
@@ -33,19 +28,40 @@ export default class Map extends React.Component {
     })
   }
 
+  componentDidMount = async () => {
+    try {
+      const parkRunResponse = await axios.get("https://images.parkrun.com/events.json");
+      console.log(parkRunResponse);
+    } catch (e) {
+      console.error(e);
+      this.setState({ error: "Sorry, failed to fetch parkrun events. Try refreshing the page."})
+    }
+
+  }
+
   render() {
     const { viewport } = this.state;
     return (
-      <ReactMapGL
-        {...viewport}
-        mapStyle="mapbox://styles/mapbox/dark-v9"
-        mapboxApiAccessToken={ TOKEN }
-        onViewportChange={ this.updateViewport }>
-          <StyledGeolocateControl
-            positionOptions={{ enableHighAccuracy: true }}
-            trackUserLocation={ true }
-          />
-      </ReactMapGL>
+      <div>
+        {
+          this.state.error && this.state.error.length > 0 ?
+            (
+              <StyledErrorTypography>{ this.state.error }</StyledErrorTypography>
+            ) : null
+        }
+        <Container>
+          <ReactMapGL
+            {...viewport}
+            mapStyle="mapbox://styles/mapbox/dark-v9"
+            mapboxApiAccessToken={ TOKEN }
+            onViewportChange={ this.updateViewport }>
+              <StyledGeolocateControl
+                positionOptions={{ enableHighAccuracy: true }}
+                trackUserLocation={ true }
+              />
+          </ReactMapGL>
+        </Container>
+      </div>
     );
   }
 }

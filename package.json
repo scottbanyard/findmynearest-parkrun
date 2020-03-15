@@ -1,7 +1,7 @@
 {
-  "name": "scotts-basic-react-template",
+  "name": "findmynearest-parkrun",
   "version": "1.1.0",
-  "description": "A basic React application template to use when starting simple websites.",
+  "description": "A React application that will allow you to find your nearest parkrun event.",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --open",
@@ -19,6 +19,7 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-map-gl": "^5.2.0",
     "@types/styled-components": "^4.1.4",
+    "axios": "^0.19.2",
     "dotenv-webpack": "^1.7.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",

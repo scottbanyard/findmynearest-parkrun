@@ -1,19 +1,11 @@
 import * as React from "react";
-import styled from "styled-components";
 import Map from "../Map"
-
-const Container = styled.div`
-  padding: 20px;
-`;
-
-const Title = styled.h3`
-  text-align: center;
-`;
+import { Container, StyledTypography } from "./styles";
 
 export const App = () => (
   <div>
     <Container>
-      <Title>findmynearest parkrun</Title>
+      <StyledTypography>findmynearest parkrun</StyledTypography>
       <Map/>
     </Container>
   </div>
