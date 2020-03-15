@@ -7,10 +7,10 @@ You can visit this application <a href="https://findmynearest-parkrun.firebaseap
 NOTE: This project is still ongoing!
 
 ### TODO:
-- Field to enter a location / retrieve current location from browser
-- Algorithm to calculate distance between two co-ordinates
+- Create a field to enter a location / retrieve current location from browser
+- Use an existing algorithm to calculate distance between two co-ordinates
 - Highlight the parkrun point on the map that is the closest (by walking)
-- (Advanced) draw a route to get to the parkrun onto the map
+- (Advanced) Draw a route to get to the parkrun onto the map
 - (Advanced) Different modes of transport to consider?
 
 ### Instructions
