@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, { Source, Layer } from 'react-map-gl';
 import { IMapState, IViewport } from "./types";
 import { Container, StyledGeolocateControl, StyledErrorTypography } from "./styles";
 import axios from "axios";
@@ -14,9 +14,10 @@ const defaultState: IMapState = {
     bearing: 0,
     pitch: 0,
     width: "100%",
-    height: "50vh",
+    height: "50vh"
   },
-  error: undefined
+  error: undefined,
+  data: null
 }
 
 export default class Map extends React.Component {
@@ -31,7 +32,10 @@ export default class Map extends React.Component {
   componentDidMount = async () => {
     try {
       const parkRunResponse = await axios.get("https://images.parkrun.com/events.json");
-      console.log(parkRunResponse);
+      console.log(parkRunResponse.data);
+      this.setState({
+        data: parkRunResponse && parkRunResponse.data ? parkRunResponse.data.events : null
+      })
     } catch (e) {
       console.error(e);
       this.setState({ error: "Sorry, failed to fetch parkrun events. Try refreshing the page."})
@@ -40,7 +44,7 @@ export default class Map extends React.Component {
   }
 
   render() {
-    const { viewport } = this.state;
+    const { viewport, data } = this.state;
     return (
       <div>
         {
@@ -59,6 +63,17 @@ export default class Map extends React.Component {
                 positionOptions={{ enableHighAccuracy: true }}
                 trackUserLocation={ true }
               />
+              <Source id="parkrun-geojson" type="geojson" data={data as any}>
+                <Layer
+                  id="parkrun-layer"
+                  type="circle"
+                  source="parkrun-geojson"
+                  paint={{
+                    "circle-color": "#f00",
+                    "circle-radius": 4
+                  }}
+                />
+              </Source>
           </ReactMapGL>
         </Container>
       </div>
