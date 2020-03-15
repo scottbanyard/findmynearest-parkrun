@@ -21,7 +21,7 @@ const defaultState: IMapState = {
 }
 
 export default class Map extends React.Component {
-  state = defaultState;
+  readonly state = defaultState;
 
   updateViewport = (viewport: IViewport) => {
     this.setState({
