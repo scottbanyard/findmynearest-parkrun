@@ -1,7 +1,7 @@
 import * as React from "react";
-import ReactMapGL, { Source, Layer, NavigationControl } from 'react-map-gl';
+import ReactMapGL, { Source, Layer, NavigationControl, PointerEvent } from 'react-map-gl';
 import { IMapState, IViewport } from "./types";
-import { Container, StyledGeolocateControl, StyledErrorTypography, NavContainer } from "./styles";
+import { Container, StyledGeolocateControl, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText } from "./styles";
 import axios from "axios";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
@@ -17,17 +17,14 @@ const defaultState: IMapState = {
     height: "50vh"
   },
   error: undefined,
-  data: null
+  data: null,
+  hoveredFeature: null,
+  tooltipX: null,
+  tooltipY: null
 }
 
 export default class Map extends React.Component {
   readonly state = defaultState;
-
-  updateViewport = (viewport: IViewport) => {
-    this.setState({
-      viewport
-    })
-  }
 
   componentDidMount = async () => {
     try {
@@ -40,7 +37,38 @@ export default class Map extends React.Component {
       console.error(e);
       this.setState({ error: "Sorry, failed to fetch parkrun events. Try refreshing the page."})
     }
+  }
 
+  updateViewport = (viewport: IViewport) => {
+    this.setState({
+      viewport
+    })
+  }
+
+  onHover = (event: PointerEvent) => {
+    const { features, srcEvent } = event;
+    const hoveredFeature = features && features.find((f: any) => f.layer.id === "parkrun-layer");
+    this.setState({
+      hoveredFeature,
+      tooltipX: srcEvent.offsetX,
+      tooltipY: srcEvent.offsetY
+    })
+  }
+
+  renderTooltip = () => {
+    const { hoveredFeature, tooltipX, tooltipY } = this.state;
+    return (
+      hoveredFeature && this.validateTooltipCoords(tooltipX, tooltipY) && (
+        <StyledTooltip style={{left: tooltipX, top: tooltipY}}>
+          <StyledTooltipText>Name: { hoveredFeature.properties.EventLongName }</StyledTooltipText>
+          <StyledTooltipText>Location: { hoveredFeature.properties.EventLocation }</StyledTooltipText>
+        </StyledTooltip>
+      )
+    );
+  }
+
+  validateTooltipCoords = (x: number, y: number) => {
+    return (x > 3 || x < -3) && (y > 3 || y < -3);
   }
 
   render() {
@@ -58,6 +86,7 @@ export default class Map extends React.Component {
             {...viewport}
             mapStyle="mapbox://styles/mapbox/dark-v9"
             mapboxApiAccessToken={ TOKEN }
+            onHover={ this.onHover }
             onViewportChange={ this.updateViewport }>
               <NavContainer>
                 <NavigationControl/>
@@ -73,10 +102,11 @@ export default class Map extends React.Component {
                   source="parkrun-geojson"
                   paint={{
                     "circle-color": "#308be6",
-                    "circle-radius": 4
+                    "circle-radius": 5
                   }}
                 />
               </Source>
+              { this.renderTooltip() }
           </ReactMapGL>
         </Container>
       </div>

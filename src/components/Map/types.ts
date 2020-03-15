@@ -2,8 +2,11 @@ import { GeoJSON } from "geojson";
 
 export interface IMapState {
   viewport: IViewport;
+  data: GeoJSON;
+  hoveredFeature: any;
   error?: string;
-  data?: GeoJSON;
+  tooltipX?: number;
+  tooltipY?: number;
 }
 
 export interface IViewport {
