@@ -12,6 +12,12 @@ export const StyledGeolocateControl = styled(GeolocateControl)`
   margin: 10px;
 `;
 
+export const NavContainer = styled.div`
+  position: absolute;
+  left: 0;
+  margin: 10px;
+`;
+
 export const StyledErrorTypography = styled(Typography)`
   && {
     color: red;

@@ -1,7 +1,7 @@
 import * as React from "react";
-import ReactMapGL, { Source, Layer } from 'react-map-gl';
+import ReactMapGL, { Source, Layer, NavigationControl } from 'react-map-gl';
 import { IMapState, IViewport } from "./types";
-import { Container, StyledGeolocateControl, StyledErrorTypography } from "./styles";
+import { Container, StyledGeolocateControl, StyledErrorTypography, NavContainer } from "./styles";
 import axios from "axios";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
@@ -59,6 +59,9 @@ export default class Map extends React.Component {
             mapStyle="mapbox://styles/mapbox/dark-v9"
             mapboxApiAccessToken={ TOKEN }
             onViewportChange={ this.updateViewport }>
+              <NavContainer>
+                <NavigationControl/>
+              </NavContainer>
               <StyledGeolocateControl
                 positionOptions={{ enableHighAccuracy: true }}
                 trackUserLocation={ true }
@@ -69,7 +72,7 @@ export default class Map extends React.Component {
                   type="circle"
                   source="parkrun-geojson"
                   paint={{
-                    "circle-color": "#f00",
+                    "circle-color": "#308be6",
                     "circle-radius": 4
                   }}
                 />
