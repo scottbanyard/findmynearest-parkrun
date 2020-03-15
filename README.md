@@ -14,6 +14,7 @@ A mapping application that allows you to find your nearest parkrun from a given 
 ### Tech Used
 - ReactJS
 - TypeScript (with TSlint)
+- <a href="https://github.com/uber/react-map-gl" target="_blank">react-map-gl</a> which is a wrapper around Mapbox GL
 - MaterialUI
 - Webpack
 - Husky (Git hooks)
