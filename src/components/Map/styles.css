@@ -1,0 +1,36 @@
+.react-geocoder {
+  width: 35%;
+  min-width: 200px;
+  margin: 0 auto;
+}
+
+.react-geocoder input {
+  width: 100%;
+  font-weight: 300;
+  font-size: 14px;
+  padding: 7px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1.2px;
+}
+
+.react-geocoder-results {
+  z-index: 1;
+  background-color: white;
+  width: 102.5%;
+  font-weight: 300;
+  cursor: pointer;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top: transparent;
+  border-style: solid;
+  border-width: 1.2px;
+}
+
+.react-geocoder-item {
+  border-bottom: 1px solid black;
+  font-weight: 300;
+  font-size: 14px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+  padding: 7px;
+}

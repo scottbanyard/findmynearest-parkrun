@@ -1,8 +1,11 @@
 import * as React from "react";
 import ReactMapGL, { Source, Layer, NavigationControl, PointerEvent } from 'react-map-gl';
-import { IMapState, IViewport } from "./types";
-import { Container, StyledGeolocateControl, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText } from "./styles";
+import { IMapState, IViewport, IGeocoderItem } from "./types";
+import { Container, StyledGeolocateControl, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText, GeocoderContainer, StyledTypography } from "./styles";
 import axios from "axios";
+// @ts-ignore
+import Geocoder from 'react-mapbox-gl-geocoder';
+import "./styles.css";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -20,7 +23,8 @@ const defaultState: IMapState = {
   data: null,
   hoveredFeature: null,
   tooltipX: null,
-  tooltipY: null
+  tooltipY: null,
+  selectedAddress: undefined
 }
 
 export default class Map extends React.Component {
@@ -71,6 +75,12 @@ export default class Map extends React.Component {
     return (x > 3 || x < -3) && (y > 3 || y < -3);
   }
 
+  onSelectAddress = (viewport: IViewport, item: IGeocoderItem) => {
+    this.updateViewport({ ...this.state.viewport, ...viewport });
+    this.setState({ selectedAddress: item })
+    console.log("Selected address: ", item);
+  }
+
   render() {
     const { viewport, data } = this.state;
     return (
@@ -82,6 +92,17 @@ export default class Map extends React.Component {
             ) : null
         }
         <Container>
+          <GeocoderContainer>
+            <StyledTypography>enter and select address</StyledTypography>
+            <Geocoder
+              mapboxApiAccessToken={ TOKEN }
+              onSelected={ this.onSelectAddress }
+              hideOnSelect={ true }
+              viewport={ viewport }
+              updateInputOnSelect={ true }
+              transitionDuration={ 3000 }
+            />
+          </GeocoderContainer>
           <ReactMapGL
             {...viewport}
             mapStyle="mapbox://styles/mapbox/dark-v9"

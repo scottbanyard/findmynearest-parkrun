@@ -10,7 +10,7 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json", "jpg"]
+    extensions: [".ts", ".tsx", ".js", ".json", "jpg", ".css"]
   },
 
   devServer: {
@@ -26,7 +26,7 @@ module.exports = {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       { test: /\.tsx?$/, loader: "ts-loader" },
-
+      { test: /\.css$/i, use: [ { loader: 'style-loader' }, { loader: 'css-loader' } ] },
       {
         test: /\.(gif|png|jpe?g|svg)$/,
         use: [

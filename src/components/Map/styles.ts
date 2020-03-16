@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { GeolocateControl } from "react-map-gl";
 import { Typography } from "@material-ui/core"
+
 export const Container = styled.div`
   margin-top: 40px;
 `;
@@ -28,6 +29,15 @@ export const StyledErrorTypography = styled(Typography)`
   }
 `;
 
+export const StyledTypography = styled(Typography)`
+  && {
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 7px;
+    font-size: 16px;
+  }
+`;
+
 export const StyledTooltip = styled.div`
   && {
     z-index: 1000;
@@ -45,4 +55,8 @@ export const StyledTooltipText = styled(Typography)`
   font-size: 11px;
   padding: 2px;
 }
+`;
+
+export const GeocoderContainer = styled.div`
+  margin-bottom: 40px;
 `;
