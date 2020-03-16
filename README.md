@@ -10,6 +10,7 @@ NOTE: This project is still ongoing!
 - Create a field to enter a location / retrieve current location from browser
 - Use an existing algorithm to calculate distance between two co-ordinates
 - Highlight the parkrun point on the map that is the closest (by walking)
+- Dockerise
 - (Advanced) Draw a route to get to the parkrun onto the map
 - (Advanced) Different modes of transport to consider?
 
