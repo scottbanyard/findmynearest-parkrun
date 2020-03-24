@@ -1,9 +1,10 @@
-import { GeoJSON, Point } from "geojson";
+import { GeoJSON, Point, Feature } from "geojson";
 
 export interface IMapState {
   viewport: IViewport;
   data: GeoJSON;
-  hoveredFeature: any;
+  hoveredParkrunFeature: Feature;
+  hoveredAddressFeature: Feature;
   error?: string;
   tooltipX?: number;
   tooltipY?: number;
@@ -44,7 +45,10 @@ export interface IGeocoderItem {
 }
 
 interface IGeocoderProperties {
-  wikidata: string;
+  wikidata?: string;
+  name: string;
+  id: string;
+  place_type: string[];
 }
 
 interface IContextItem {

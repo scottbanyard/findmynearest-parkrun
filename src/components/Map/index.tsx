@@ -6,6 +6,7 @@ import axios from "axios";
 // @ts-ignore
 import Geocoder from 'react-mapbox-gl-geocoder';
 import "./styles.css";
+import { Feature } from "GeoJSON";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -21,10 +22,11 @@ const defaultState: IMapState = {
   },
   error: undefined,
   data: null,
-  hoveredFeature: null,
+  hoveredParkrunFeature: null,
+  hoveredAddressFeature: null,
   tooltipX: null,
   tooltipY: null,
-  selectedAddress: undefined
+  selectedAddress: null
 }
 
 export default class Map extends React.Component {
@@ -51,23 +53,44 @@ export default class Map extends React.Component {
 
   onHover = (event: PointerEvent) => {
     const { features, srcEvent } = event;
-    const hoveredFeature = features && features.find((f: any) => f.layer.id === "parkrun-layer");
+    const hoveredParkrunFeature = features && features.find((f: any) => f.layer.id === "parkrun-layer");
+    const hoveredAddressFeature = features && features.find((f: any) => f.layer.id === "address-layer");
+
     this.setState({
-      hoveredFeature,
+      hoveredParkrunFeature,
+      hoveredAddressFeature,
       tooltipX: srcEvent.offsetX,
       tooltipY: srcEvent.offsetY
     })
   }
 
   renderTooltip = () => {
-    const { hoveredFeature, tooltipX, tooltipY } = this.state;
+    const { hoveredParkrunFeature, hoveredAddressFeature, tooltipX, tooltipY } = this.state;
     return (
-      hoveredFeature && this.validateTooltipCoords(tooltipX, tooltipY) && (
+      (hoveredParkrunFeature || hoveredAddressFeature) && this.validateTooltipCoords(tooltipX, tooltipY) && (
         <StyledTooltip style={{left: tooltipX, top: tooltipY}}>
-          <StyledTooltipText>Name: { hoveredFeature.properties.EventLongName }</StyledTooltipText>
-          <StyledTooltipText>Location: { hoveredFeature.properties.EventLocation }</StyledTooltipText>
+          { hoveredParkrunFeature ? this.renderParkrunTooltip(hoveredParkrunFeature) :
+            hoveredAddressFeature ? this.renderAddressTooltip(hoveredAddressFeature) : null }
         </StyledTooltip>
       )
+    );
+  }
+
+  renderAddressTooltip = (hoveredFeature: Feature) => {
+    return (
+      <div>
+        <StyledTooltipText>ID: { hoveredFeature.properties.id }</StyledTooltipText>
+        <StyledTooltipText>Name: { hoveredFeature.properties.name }</StyledTooltipText>
+      </div>
+    );
+  }
+
+  renderParkrunTooltip = (hoveredFeature: Feature) => {
+    return (
+      <div>
+        <StyledTooltipText>Name: { hoveredFeature.properties.EventLongName }</StyledTooltipText>
+        <StyledTooltipText>Location: { hoveredFeature.properties.EventLocation }</StyledTooltipText>
+      </div>
     );
   }
 
@@ -77,12 +100,15 @@ export default class Map extends React.Component {
 
   onSelectAddress = (viewport: IViewport, item: IGeocoderItem) => {
     this.updateViewport({ ...this.state.viewport, ...viewport });
+    item.properties.id = item.id;
+    item.properties.name = item.place_name;
+    item.properties.place_type = item.place_type;
     this.setState({ selectedAddress: item })
     console.log("Selected address: ", item);
   }
 
   render() {
-    const { viewport, data } = this.state;
+    const { viewport, data, selectedAddress } = this.state;
     return (
       <div>
         {
@@ -127,7 +153,21 @@ export default class Map extends React.Component {
                   }}
                 />
               </Source>
+
+              <Source id="address-geojson" type="geojson" data={selectedAddress as any}>
+                <Layer
+                  id="address-layer"
+                  type="circle"
+                  source="address-geojson"
+                  paint={{
+                    "circle-color": "#ffc33c",
+                    "circle-radius": 6
+                  }}
+                />
+              </Source>
+
               { this.renderTooltip() }
+
           </ReactMapGL>
         </Container>
       </div>
