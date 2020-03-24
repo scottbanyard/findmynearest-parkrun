@@ -7,7 +7,7 @@ You can visit this application <a href="https://findmynearest-parkrun.firebaseap
 NOTE: This project is still ongoing!
 
 ### TODO:
-- Create a field to enter a location / retrieve current location from browser
+- ~~Create a field to enter a location and plot on map~~
 - Use an existing algorithm to calculate distance between two co-ordinates
 - Highlight the parkrun point on the map that is the closest (by walking)
 - Dockerise
