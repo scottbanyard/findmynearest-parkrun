@@ -203,7 +203,7 @@ export default class Map extends React.Component {
                     "circle-radius": 4,
                     'circle-color': [
                       'match',
-                      ['get', 'closeParkrun'],
+                      ['get', 'parkrunClose'],
                       'true',
                       '#cdff62',
                       'false',

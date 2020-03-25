@@ -22,13 +22,13 @@ export default class DistanceService {
   * Calculate the nearest parkruns from an address using a defined distance threshold
   * @param address the selected address from the geocoder
   * @param parkruns the FeatureCollection of parkruns
-  * @return a FeatureCollection of parkruns with new properties (distanceToAddress: number and closeParkrun: boolean)
+  * @return a FeatureCollection of parkruns with new properties (distanceToAddress: number and parkrunClose: boolean)
   **/
   static getNearestParkruns = (address: IGeocoderItem, parkruns: FeatureCollection): any => {
     parkruns.features.forEach((f: any) => {
       const distance = DistanceService.calculateDistance(address.geometry, f.geometry);
       f.properties.distanceToAddress = distance;
-      f.properties.closeParkrun = "false";
+      f.properties.parkrunClose = "false";
       f.properties.position = -1;
     });
     const sortedParkruns = DistanceService.sortParkruns(parkruns);
@@ -49,11 +49,11 @@ export default class DistanceService {
   /*
   * Identify the top three parkruns
   * @param sortedParkruns a sorted FeatureCollection of parkruns
-  * @return a modified FeatureCollection where the property 'closeParkrun' = true for the nearest parkruns
+  * @return a modified FeatureCollection where the property 'parkrunClose' = true for the nearest parkruns
   **/
   static identifyTop3Parkruns = (sortedParkruns: FeatureCollection) => {
     for (let i = 0; i < NUM_NEAREST; i++) {
-      sortedParkruns.features[i].properties.closeParkrun = "true";
+      sortedParkruns.features[i].properties.parkrunClose = "true";
       sortedParkruns.features[i].properties.position = i + 1;
     }
     return sortedParkruns;
