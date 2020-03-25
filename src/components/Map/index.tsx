@@ -6,7 +6,9 @@ import axios from "axios";
 // @ts-ignore
 import Geocoder from 'react-mapbox-gl-geocoder';
 import "./styles.css";
-import { Feature } from "GeoJSON";
+import { Feature, FeatureCollection } from "geojson";
+import DistanceService from "../../services/DistanceService";
+import DirectionsService from "../../services/DirectionsService";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -21,7 +23,7 @@ const defaultState: IMapState = {
     height: "50vh"
   },
   error: undefined,
-  data: null,
+  parkrunData: null,
   hoveredParkrunFeature: null,
   hoveredAddressFeature: null,
   tooltipX: null,
@@ -37,7 +39,7 @@ export default class Map extends React.Component {
       const parkRunResponse = await axios.get("https://images.parkrun.com/events.json");
       console.log(parkRunResponse.data);
       this.setState({
-        data: parkRunResponse && parkRunResponse.data ? parkRunResponse.data.events : null
+        parkrunData: parkRunResponse && parkRunResponse.data ? parkRunResponse.data.events : null
       })
     } catch (e) {
       console.error(e);
@@ -62,6 +64,63 @@ export default class Map extends React.Component {
       tooltipX: srcEvent.offsetX,
       tooltipY: srcEvent.offsetY
     })
+  }
+
+  validateTooltipCoords = (x: number, y: number) => {
+    return (x > 3 || x < -3) && (y > 3 || y < -3);
+  }
+
+  calculateClosestParkruns = () => {
+    const { selectedAddress, parkrunData } = this.state;
+    const closestParkruns = DistanceService.getNearestParkruns(selectedAddress, parkrunData);
+    console.log(closestParkruns);
+    return closestParkruns;
+  }
+
+  calculateRoutes = async (item: IGeocoderItem, parkruns: Feature[]) => {
+    try {
+      const promises = parkruns.map((p) => DirectionsService.getDirections("walking", item, p));
+      const routeResponses = await Promise.all(promises);
+      console.log(routeResponses);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Put properties of the geocoded item into the properties attribute
+  modifyAddressProperties = (item: IGeocoderItem): IGeocoderItem => {
+    item.properties.id = item.id;
+    item.properties.name = item.place_name;
+    item.properties.place_type = item.place_type;
+    return item;
+  }
+
+  onSelectAddress = (viewport: IViewport, item: IGeocoderItem) => {
+    this.resetError();
+    this.updateViewport({ ...this.state.viewport, ...viewport });
+    const address = this.modifyAddressProperties(item);
+    this.setState({ selectedAddress: item }, () => {
+        this.setNearestParkruns();
+    });
+  }
+
+  setNearestParkruns = () => {
+    try {
+      const closestParkruns = this.calculateClosestParkruns();
+      // force refresh of layer
+      this.setState({ parkrunData: null }, () => {
+        this.setState({ parkrunData: closestParkruns })
+      });
+
+      // const routes = await this.calculateRoutes(item, closestParkruns);
+    } catch (e) {
+      console.error(e);
+      this.setState({ error: "Sorry, failed to fetch your nearest parkruns. Try refreshing the page."})
+    }
+  }
+
+  resetError = () => {
+    this.setState({ error: undefined });
   }
 
   renderTooltip = () => {
@@ -90,25 +149,18 @@ export default class Map extends React.Component {
       <div>
         <StyledTooltipText>Name: { hoveredFeature.properties.EventLongName }</StyledTooltipText>
         <StyledTooltipText>Location: { hoveredFeature.properties.EventLocation }</StyledTooltipText>
+        { hoveredFeature.properties.distanceToAddress ? (
+          <StyledTooltipText>Distance: { hoveredFeature.properties.distanceToAddress } meters</StyledTooltipText>
+        ) : null }
+        { hoveredFeature.properties.position > 0 ? (
+          <StyledTooltipText>Position: { hoveredFeature.properties.position }</StyledTooltipText>
+        ) : null }
       </div>
     );
   }
 
-  validateTooltipCoords = (x: number, y: number) => {
-    return (x > 3 || x < -3) && (y > 3 || y < -3);
-  }
-
-  onSelectAddress = (viewport: IViewport, item: IGeocoderItem) => {
-    this.updateViewport({ ...this.state.viewport, ...viewport });
-    item.properties.id = item.id;
-    item.properties.name = item.place_name;
-    item.properties.place_type = item.place_type;
-    this.setState({ selectedAddress: item })
-    console.log("Selected address: ", item);
-  }
-
   render() {
-    const { viewport, data, selectedAddress } = this.state;
+    const { viewport, parkrunData, selectedAddress } = this.state;
     return (
       <div>
         {
@@ -142,14 +194,22 @@ export default class Map extends React.Component {
                 positionOptions={{ enableHighAccuracy: true }}
                 trackUserLocation={ true }
               />
-              <Source id="parkrun-geojson" type="geojson" data={data as any}>
+              <Source id="parkrun-geojson" type="geojson" data={parkrunData}>
                 <Layer
                   id="parkrun-layer"
                   type="circle"
                   source="parkrun-geojson"
                   paint={{
-                    "circle-color": "#308be6",
-                    "circle-radius": 5
+                    "circle-radius": 4,
+                    'circle-color': [
+                      'match',
+                      ['get', 'closeParkrun'],
+                      'true',
+                      '#cdff62',
+                      'false',
+                      '#308be6',
+                      /* other */ '#308be6'
+                    ]
                   }}
                 />
               </Source>
@@ -160,7 +220,7 @@ export default class Map extends React.Component {
                   type="circle"
                   source="address-geojson"
                   paint={{
-                    "circle-color": "#ffc33c",
+                    "circle-color": "#ff74da",
                     "circle-radius": 6
                   }}
                 />

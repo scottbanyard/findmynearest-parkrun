@@ -1,8 +1,8 @@
-import { GeoJSON, Point, Feature } from "geojson";
+import { Point, Feature, FeatureCollection } from "geojson";
 
 export interface IMapState {
   viewport: IViewport;
-  data: GeoJSON;
+  parkrunData: FeatureCollection;
   hoveredParkrunFeature: Feature;
   hoveredAddressFeature: Feature;
   error?: string;
