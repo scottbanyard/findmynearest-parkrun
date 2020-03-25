@@ -8,8 +8,9 @@ NOTE: This project is still ongoing!
 
 ### TODO:
 - ~~Create a field to enter a location and plot on map~~
-- Use an existing algorithm to calculate distance between two co-ordinates
-- Highlight the parkrun point on the map that is the closest (by walking)
+- ~~Use an existing algorithm to calculate distance between two co-ordinates~~
+- ~~Highlight the top 3 parkrun points on the map that are the closest~~
+- Create an accessible colour scheme for points and implement a legend
 - Dockerise
 - (Advanced) Draw a route to get to the parkrun onto the map
 - (Advanced) Different modes of transport to consider?
