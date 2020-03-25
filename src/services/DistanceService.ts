@@ -3,8 +3,8 @@ import { IGeocoderItem } from "../components/Map/types";
 import { getDistance } from "geolib";
 
 const NUM_NEAREST = parseInt(process.env.NUM_NEAREST, 10);
-export default class DistanceService {
 
+export default class DistanceService {
   /*
   * Calculate distance between 2 points (accuracy is to 1 meter)
   * @param point1 point A
@@ -24,7 +24,7 @@ export default class DistanceService {
   * @param parkruns the FeatureCollection of parkruns
   * @return a FeatureCollection of parkruns with new properties (distanceToAddress: number and parkrunClose: boolean)
   **/
-  static getNearestParkruns = (address: IGeocoderItem, parkruns: FeatureCollection): any => {
+  static getNearestParkruns = (address: IGeocoderItem, parkruns: FeatureCollection): FeatureCollection => {
     parkruns.features.forEach((f: any) => {
       const distance = DistanceService.calculateDistance(address.geometry, f.geometry);
       f.properties.distanceToAddress = distance;
@@ -41,7 +41,7 @@ export default class DistanceService {
   * @param parkruns the FeatureCollection of parkruns
   * @return a sorted FeatureCollection of parkruns
   **/
-  static sortParkruns = (parkruns: FeatureCollection) => {
+  static sortParkruns = (parkruns: FeatureCollection): FeatureCollection => {
     parkruns.features.sort((a, b) => (a.properties.distanceToAddress > b.properties.distanceToAddress) ? 1 : -1);
     return parkruns;
   }
@@ -51,7 +51,7 @@ export default class DistanceService {
   * @param sortedParkruns a sorted FeatureCollection of parkruns
   * @return a modified FeatureCollection where the property 'parkrunClose' = true for the nearest parkruns
   **/
-  static identifyTop3Parkruns = (sortedParkruns: FeatureCollection) => {
+  static identifyTop3Parkruns = (sortedParkruns: FeatureCollection): FeatureCollection => {
     for (let i = 0; i < NUM_NEAREST; i++) {
       sortedParkruns.features[i].properties.parkrunClose = "true";
       sortedParkruns.features[i].properties.position = i + 1;

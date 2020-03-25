@@ -1,6 +1,6 @@
 {
   "name": "findmynearest-parkrun",
-  "version": "1.31.0",
+  "version": "1.32.0",
   "description": "A React application that will allow you to find your nearest parkrun event.",
   "main": "index.js",
   "scripts": {
