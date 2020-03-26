@@ -11,6 +11,7 @@ NOTE: This project is still ongoing!
 - ~~Use an existing algorithm to calculate distance between two co-ordinates~~
 - ~~Highlight the top 3 parkrun points on the map that are the closest~~
 - Create an accessible colour scheme for points and implement a legend
+- Aggregate parkrun feature layer on zoom
 - Dockerise
 - (Advanced) Draw a route to get to the parkrun onto the map
 - (Advanced) Different modes of transport to consider?
@@ -31,4 +32,3 @@ NOTE: This project is still ongoing!
 - <a href="https://github.com/manuelbieh/geolib" target="_blank">geolib</a> to calculate distances between points
 - MaterialUI
 - Webpack
-- Husky (Git hooks)
