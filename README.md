@@ -28,6 +28,7 @@ NOTE: This project is still ongoing!
 - ReactJS
 - TypeScript (with TSlint)
 - <a href="https://github.com/uber/react-map-gl" target="_blank">react-map-gl</a> which is a wrapper around Mapbox GL
+- <a href="https://github.com/manuelbieh/geolib" target="_blank">geolib</a> to calculate distances between points
 - MaterialUI
 - Webpack
 - Husky (Git hooks)
