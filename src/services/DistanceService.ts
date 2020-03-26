@@ -32,7 +32,7 @@ export default class DistanceService {
       f.properties.position = -1;
     });
     const sortedParkruns = DistanceService.sortParkruns(parkruns);
-    const finalParkruns = DistanceService.identifyTop3Parkruns(sortedParkruns);
+    const finalParkruns = DistanceService.setNearestParkrunAttributes(sortedParkruns);
     return finalParkruns;
   }
 
@@ -47,11 +47,11 @@ export default class DistanceService {
   }
 
   /*
-  * Identify the top three parkruns
+  * Set the nearest parkrun attributes to the top NUM_NEAREST features
   * @param sortedParkruns a sorted FeatureCollection of parkruns
   * @return a modified FeatureCollection where the property 'parkrunClose' = true for the nearest parkruns
   **/
-  static identifyTop3Parkruns = (sortedParkruns: FeatureCollection): FeatureCollection => {
+  static setNearestParkrunAttributes = (sortedParkruns: FeatureCollection): FeatureCollection => {
     for (let i = 0; i < NUM_NEAREST; i++) {
       sortedParkruns.features[i].properties.parkrunClose = "true";
       sortedParkruns.features[i].properties.position = i + 1;
