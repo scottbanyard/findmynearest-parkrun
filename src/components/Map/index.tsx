@@ -9,6 +9,7 @@ import "./styles.css";
 import { Feature, FeatureCollection } from "geojson";
 import DistanceService from "../../services/DistanceService";
 import DirectionsService from "../../services/DirectionsService";
+import { MAP_STYLE, PARKRUN_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_NEAREST_COLOUR, ADDRESS_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_SIZE, ADDRESS_LAYER_SIZE } from "./constants";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -183,7 +184,7 @@ export default class Map extends React.Component {
           </GeocoderContainer>
           <ReactMapGL
             {...viewport}
-            mapStyle="mapbox://styles/mapbox/dark-v9"
+            mapStyle={ MAP_STYLE }
             mapboxApiAccessToken={ TOKEN }
             onHover={ this.onHover }
             onViewportChange={ this.updateViewport }>
@@ -200,19 +201,21 @@ export default class Map extends React.Component {
                   type="circle"
                   source="parkrun-geojson"
                   paint={{
-                    "circle-radius": 4,
+                    "circle-radius": PARKRUN_LAYER_SIZE,
                     'circle-color': [
                       'match',
                       ['get', 'parkrunClose'],
                       'true',
-                      '#cdff62',
+                      PARKRUN_LAYER_NEAREST_COLOUR,
                       'false',
-                      '#308be6',
-                      /* other */ '#308be6'
+                      PARKRUN_LAYER_DEFAULT_COLOUR,
+                      /* other */ PARKRUN_LAYER_DEFAULT_COLOUR
                     ]
                   }}
                 />
               </Source>
+
+
 
               <Source id="address-geojson" type="geojson" data={selectedAddress as any}>
                 <Layer
@@ -220,8 +223,8 @@ export default class Map extends React.Component {
                   type="circle"
                   source="address-geojson"
                   paint={{
-                    "circle-color": "#ff74da",
-                    "circle-radius": 6
+                    "circle-color": ADDRESS_LAYER_DEFAULT_COLOUR,
+                    "circle-radius": ADDRESS_LAYER_SIZE
                   }}
                 />
               </Source>
