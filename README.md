@@ -2,7 +2,7 @@
 
 A mapping application that allows you to find your nearest parkrun from a given location.
 
-You can visit this application <a href="https://findmynearest-parkrun.firebaseapp.com/" target="_blank">here</a>. 
+You can visit this application <a href="https://findmynearest-parkrun.firebaseapp.com/" target="_blank">here</a>.
 
 NOTE: This project is still ongoing!
 
@@ -10,8 +10,9 @@ NOTE: This project is still ongoing!
 - ~~Create a field to enter a location and plot on map~~
 - ~~Use an existing algorithm to calculate distance between two co-ordinates~~
 - ~~Highlight the top 3 parkrun points on the map that are the closest~~
-- Create an accessible colour scheme for points and implement a legend
-- Aggregate parkrun feature layer on zoom
+- ~~Create an accessible colour scheme for points~~
+- Implement a legend
+- ~~Aggregate parkrun feature layer on zoom~~
 - Dockerise
 - (Advanced) Draw a route to get to the parkrun onto the map
 - (Advanced) Different modes of transport to consider?

@@ -9,7 +9,9 @@ import "./styles.css";
 import { Feature, FeatureCollection } from "geojson";
 import DistanceService from "../../services/DistanceService";
 import DirectionsService from "../../services/DirectionsService";
-import { MAP_STYLE, PARKRUN_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_NEAREST_COLOUR, ADDRESS_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_SIZE, ADDRESS_LAYER_SIZE } from "./constants";
+import ParkrunLayers from "../ParkrunLayers";
+import AddressLayer from "../AddressLayer";
+import { MAP_STYLE, ADDRESS_LAYER_DEFAULT_COLOUR, ADDRESS_LAYER_SIZE, PARKRUN_GEOJSON_URL } from "../constants";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -29,7 +31,8 @@ const defaultState: IMapState = {
   hoveredAddressFeature: null,
   tooltipX: null,
   tooltipY: null,
-  selectedAddress: null
+  selectedAddress: null,
+  clusterOn: true
 }
 
 export default class Map extends React.Component {
@@ -37,7 +40,7 @@ export default class Map extends React.Component {
 
   componentDidMount = async () => {
     try {
-      const parkRunResponse = await axios.get("https://images.parkrun.com/events.json");
+      const parkRunResponse = await axios.get(PARKRUN_GEOJSON_URL);
       console.log(parkRunResponse.data);
       this.setState({
         parkrunData: parkRunResponse && parkRunResponse.data ? parkRunResponse.data.events : null
@@ -56,7 +59,7 @@ export default class Map extends React.Component {
 
   onHover = (event: PointerEvent) => {
     const { features, srcEvent } = event;
-    const hoveredParkrunFeature = features && features.find((f: any) => f.layer.id === "parkrun-layer");
+    const hoveredParkrunFeature = features && features.find((f: any) => f.layer.id === "parkrun-unclustered-point");
     const hoveredAddressFeature = features && features.find((f: any) => f.layer.id === "address-layer");
 
     this.setState({
@@ -161,7 +164,7 @@ export default class Map extends React.Component {
   }
 
   render() {
-    const { viewport, parkrunData, selectedAddress } = this.state;
+    const { viewport, parkrunData, selectedAddress, clusterOn } = this.state;
     return (
       <div>
         {
@@ -195,38 +198,13 @@ export default class Map extends React.Component {
                 positionOptions={{ enableHighAccuracy: true }}
                 trackUserLocation={ true }
               />
-              <Source id="parkrun-geojson" type="geojson" data={parkrunData}>
-                <Layer
-                  id="parkrun-layer"
-                  type="circle"
-                  source="parkrun-geojson"
-                  paint={{
-                    "circle-radius": PARKRUN_LAYER_SIZE,
-                    'circle-color': [
-                      'match',
-                      ['get', 'parkrunClose'],
-                      'true',
-                      PARKRUN_LAYER_NEAREST_COLOUR,
-                      'false',
-                      PARKRUN_LAYER_DEFAULT_COLOUR,
-                      /* other */ PARKRUN_LAYER_DEFAULT_COLOUR
-                    ]
-                  }}
-                />
+
+              <Source id="parkrun-geojson" type="geojson" data={parkrunData} cluster={ clusterOn } clusterMaxZoom={6} clusterRadius={100}>
+                <ParkrunLayers cluster={ clusterOn } />
               </Source>
 
-
-
               <Source id="address-geojson" type="geojson" data={selectedAddress as any}>
-                <Layer
-                  id="address-layer"
-                  type="circle"
-                  source="address-geojson"
-                  paint={{
-                    "circle-color": ADDRESS_LAYER_DEFAULT_COLOUR,
-                    "circle-radius": ADDRESS_LAYER_SIZE
-                  }}
-                />
+                <AddressLayer />
               </Source>
 
               { this.renderTooltip() }

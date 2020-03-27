@@ -9,6 +9,7 @@ export interface IMapState {
   tooltipX?: number;
   tooltipY?: number;
   selectedAddress?: IGeocoderItem;
+  clusterOn: boolean;
 }
 
 export interface IViewport {
