@@ -11,7 +11,7 @@ import DistanceService from "../../services/DistanceService";
 import DirectionsService from "../../services/DirectionsService";
 import ParkrunLayers from "../ParkrunLayers";
 import AddressLayer from "../AddressLayer";
-import { MAP_STYLE, ADDRESS_LAYER_DEFAULT_COLOUR, ADDRESS_LAYER_SIZE, PARKRUN_GEOJSON_URL } from "../constants";
+import { MAP_STYLE, ADDRESS_LAYER_DEFAULT_COLOUR, ADDRESS_LAYER_SIZE, PARKRUN_GEOJSON_URL, CLUSTER_RADIUS, CLUSTER_ZOOM } from "../constants";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -199,7 +199,7 @@ export default class Map extends React.Component {
                 trackUserLocation={ true }
               />
 
-              <Source id="parkrun-geojson" type="geojson" data={parkrunData} cluster={ clusterOn } clusterMaxZoom={6} clusterRadius={100}>
+              <Source id="parkrun-geojson" type="geojson" data={parkrunData} cluster={clusterOn} clusterMaxZoom={CLUSTER_ZOOM} clusterRadius={CLUSTER_RADIUS}>
                 <ParkrunLayers cluster={ clusterOn } />
               </Source>
 

@@ -12,3 +12,7 @@ export const ADDRESS_LAYER_DEFAULT_COLOUR = "#86e2d5";
 // POINT SIZES
 export const PARKRUN_LAYER_SIZE = 5;
 export const ADDRESS_LAYER_SIZE = 6;
+
+// CLUSTER PROPERTIES
+export const CLUSTER_ZOOM = 6;
+export const CLUSTER_RADIUS = 50;
