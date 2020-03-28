@@ -13,6 +13,7 @@ NOTE: This project is still ongoing!
 - ~~Create an accessible colour scheme for points~~
 - Implement a legend
 - ~~Aggregate parkrun feature layer on zoom~~
+- Toggle clustering
 - Dockerise
 - (Advanced) Draw a route to get to the parkrun onto the map
 - (Advanced) Different modes of transport to consider?
