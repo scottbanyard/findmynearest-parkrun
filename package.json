@@ -1,6 +1,6 @@
 {
   "name": "findmynearest-parkrun",
-  "version": "1.35.0",
+  "version": "1.37.0",
   "description": "A React application that will allow you to find your nearest parkrun event.",
   "main": "index.js",
   "scripts": {
@@ -48,8 +48,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run test && npm run build",
-      "post-commit": "npm version minor"
+      "pre-commit": "npm run lint && npm run test && npm run build"
     }
   }
 }
