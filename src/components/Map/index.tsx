@@ -1,8 +1,9 @@
 import * as React from "react";
 import ReactMapGL, { Source, Layer, NavigationControl, PointerEvent } from 'react-map-gl';
 import { IMapState, IViewport, IGeocoderItem } from "./types";
-import { Container, StyledGeolocateControl, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText, GeocoderContainer, StyledTypography } from "./styles";
+import { Container, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText, GeocoderContainer, StyledTypography, StyledClusterToggleContainer, StyledFormControlLabel } from "./styles";
 import axios from "axios";
+import Switch from '@material-ui/core/Switch';
 // @ts-ignore
 import Geocoder from 'react-mapbox-gl-geocoder';
 import "./styles.css";
@@ -11,7 +12,7 @@ import DistanceService from "../../services/DistanceService";
 import DirectionsService from "../../services/DirectionsService";
 import ParkrunLayers from "../ParkrunLayers";
 import AddressLayer from "../AddressLayer";
-import { MAP_STYLE, ADDRESS_LAYER_DEFAULT_COLOUR, ADDRESS_LAYER_SIZE, PARKRUN_GEOJSON_URL, CLUSTER_RADIUS, CLUSTER_ZOOM } from "../constants";
+import { MAP_STYLE, ADDRESS_LAYER_DEFAULT_COLOUR, ADDRESS_LAYER_SIZE, PARKRUN_GEOJSON_URL } from "../constants";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -59,7 +60,7 @@ export default class Map extends React.Component {
 
   onHover = (event: PointerEvent) => {
     const { features, srcEvent } = event;
-    const hoveredParkrunFeature = features && features.find((f: any) => f.layer.id === "parkrun-unclustered-point");
+    const hoveredParkrunFeature = features && features.find((f: any) => f.layer.id === "parkrun-unclustered-point" || f.layer.id === "parkrun-unclustered-point-in-cluster");
     const hoveredAddressFeature = features && features.find((f: any) => f.layer.id === "address-layer");
 
     this.setState({
@@ -163,6 +164,10 @@ export default class Map extends React.Component {
     );
   }
 
+  handleClusterToggle = () => {
+    this.setState({ clusterOn: !this.state.clusterOn });
+  }
+
   render() {
     const { viewport, parkrunData, selectedAddress, clusterOn } = this.state;
     return (
@@ -194,16 +199,26 @@ export default class Map extends React.Component {
               <NavContainer>
                 <NavigationControl/>
               </NavContainer>
-              <StyledGeolocateControl
-                positionOptions={{ enableHighAccuracy: true }}
-                trackUserLocation={ true }
-              />
 
-              <Source id="parkrun-geojson" type="geojson" data={parkrunData} cluster={clusterOn} clusterMaxZoom={CLUSTER_ZOOM} clusterRadius={CLUSTER_RADIUS}>
-                <ParkrunLayers cluster={ clusterOn } />
-              </Source>
+              <StyledClusterToggleContainer>
+                <StyledFormControlLabel
+                  control={
+                    <Switch
+                      checked={clusterOn}
+                      onChange={this.handleClusterToggle}
+                      name="clusterToggle"
+                      color="primary"
+                      inputProps={{ "aria-label": "Toggle Cluster" }}
+                    />
+                 }
+                 label="cluster"
+                 labelPlacement="start"
+                />
+              </StyledClusterToggleContainer>
 
-              <Source id="address-geojson" type="geojson" data={selectedAddress as any}>
+              <ParkrunLayers cluster={ clusterOn } parkrunData={ parkrunData }/>
+
+              <Source id="address-geojson" type="geojson" data={ selectedAddress as any }>
                 <AddressLayer />
               </Source>
 

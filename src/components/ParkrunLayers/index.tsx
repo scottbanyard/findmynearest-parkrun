@@ -1,18 +1,45 @@
 import * as React from "react";
-import { Layer } from 'react-map-gl';
+import { Layer, Source } from 'react-map-gl';
 import { IParkrunLayersProps } from "./types";
-import { PARKRUN_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_NEAREST_COLOUR, PARKRUN_LAYER_SIZE } from "../constants";
+import { PARKRUN_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_NEAREST_COLOUR, PARKRUN_LAYER_SIZE, CLUSTER_RADIUS, CLUSTER_ZOOM } from "../constants";
 
 const ParkrunLayers = (props: IParkrunLayersProps) => {
-  if (props.cluster) {
-    return (
-      <div>
+  return (
+    <div>
+      <Source id="parkrun-geojson-unclustered" type="geojson" data={props.parkrunData}>
 
         {/* UNCLUSTERED PARKRUN POINT LAYER */}
         <Layer
           id="parkrun-unclustered-point"
           type="circle"
-          source="parkrun-geojson"
+          source="parkrun-geojson-unclustered"
+          paint={{
+            "circle-radius": PARKRUN_LAYER_SIZE,
+            "circle-color": [
+              "match",
+              ["get", "parkrunClose"],
+              "true",
+              PARKRUN_LAYER_NEAREST_COLOUR,
+              "false",
+              PARKRUN_LAYER_DEFAULT_COLOUR,
+              /* other */ PARKRUN_LAYER_DEFAULT_COLOUR
+            ],
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#fff'
+          }}
+          layout={{
+            "visibility": props.cluster ? "none" : "visible"
+          }}
+        />
+      </Source>
+
+      <Source id="parkrun-geojson-clustered" type="geojson" data={props.parkrunData} cluster={true} clusterMaxZoom={CLUSTER_ZOOM} clusterRadius={CLUSTER_RADIUS}>
+
+        {/* UNCLUSTERED PARKRUN POINT LAYER */}
+        <Layer
+          id="parkrun-unclustered-point-in-cluster"
+          type="circle"
+          source="parkrun-geojson-clustered"
           filter={["!", ["has", "point_count"]]}
           paint={{
             "circle-radius": PARKRUN_LAYER_SIZE,
@@ -28,13 +55,16 @@ const ParkrunLayers = (props: IParkrunLayersProps) => {
             'circle-stroke-width': 1,
             'circle-stroke-color': '#fff'
           }}
+          layout={{
+            "visibility": props.cluster ? "visible" : "none"
+          }}
         />
 
         {/* CLUSTER PARKRUN LAYER */}
         <Layer
           id="parkrun-clusters"
           type="circle"
-          source="parkrun-geojson"
+          source="parkrun-geojson-clustered"
           filter={["has", "point_count"]}
           paint={{
             "circle-radius": [
@@ -58,49 +88,28 @@ const ParkrunLayers = (props: IParkrunLayersProps) => {
             "circle-stroke-width": 1,
             "circle-stroke-color": "#fff"
           }}
+          layout={{
+            "visibility": props.cluster ? "visible" : "none"
+          }}
         />
 
         {/* CLUSTER TEXT FIELD LAYER */}
         <Layer
           id="parkrun-cluster-count"
           type="symbol"
-          source="parkrun-geojson"
+          source="parkrun-geojson-clustered"
           filter={["has", "point_count"]}
           layout={{
             "text-field": "{point_count_abbreviated}",
             "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-            "text-size": 12
+            "text-size": 12,
+            "visibility": props.cluster ? "visible" : "none"
           }}
           paint={{}}
         />
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        {/* UNCLUSTERED PARKRUN POINT LAYER */}
-        <Layer
-          id="parkrun-unclustered-point"
-          type="circle"
-          source="parkrun-geojson"
-          paint={{
-            "circle-radius": PARKRUN_LAYER_SIZE,
-            "circle-color": [
-              "match",
-              ["get", "parkrunClose"],
-              "true",
-              PARKRUN_LAYER_NEAREST_COLOUR,
-              "false",
-              PARKRUN_LAYER_DEFAULT_COLOUR,
-              /* other */ PARKRUN_LAYER_DEFAULT_COLOUR
-            ],
-            'circle-stroke-width': 1,
-            'circle-stroke-color': '#fff'
-          }}
-        />
-      </div>
-    )
-  }
+      </Source>
+    </div>
+  )
 }
 
 export default ParkrunLayers;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { GeolocateControl } from "react-map-gl";
-import { Typography } from "@material-ui/core"
+import { Typography, FormControlLabel } from "@material-ui/core"
 
 export const Container = styled.div`
   margin-top: 40px;
@@ -11,6 +11,26 @@ export const StyledGeolocateControl = styled(GeolocateControl)`
   top: 0;
   right: 0;
   margin: 10px;
+`;
+
+export const StyledClusterToggleContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  margin-right: 30px;
+  margin-top: 15px;
+`;
+
+export const StyledFormControlLabel = styled(FormControlLabel)`
+  && {
+    background-color: white;
+    border: black;
+    border-radius: 26px;
+    margin-right: 0px;
+    width: 100%;
+    font-weight: 300;
+  }
 `;
 
 export const NavContainer = styled.div`
