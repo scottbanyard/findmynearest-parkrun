@@ -8,6 +8,7 @@
     "build": "webpack --mode production",
     "test": "jest",
     "testWatch": "jest --watchAll --colors --verbose",
+    "travisTest": "npm run lint && npm run test && npm run build",
     "deploy": "npm run lint && npm run test && npm run build && firebase deploy",
     "lint": "tslint --project ./"
   },
