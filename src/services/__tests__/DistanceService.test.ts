@@ -3,7 +3,7 @@ import { Point } from "geojson";
 import mockedGeocoderItem from "../__mocks__/GeocoderItem";
 import mockedParkrunFeatureCollection from "../__mocks__/ParkrunFeatureCollection";
 import mockedParkrunFeatureCollectionWithDistances from "../__mocks__/ParkrunFeatureCollectionWithDistances";
-import mockedSortedParkrunFeatureCollection from "../__mocks__/sortedParkrunFeatureCollection";
+import mockedSortedParkrunFeatureCollection from "../__mocks__/SortedParkrunFeatureCollection";
 
 describe("DistanceService", () => {
   test("Distance is calculated correctly between two valid points.", () => {
