@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Layer, Source } from 'react-map-gl';
 import { IParkrunLayersProps } from "./types";
-import { PARKRUN_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_NEAREST_COLOUR, PARKRUN_LAYER_SIZE, CLUSTER_RADIUS, CLUSTER_ZOOM } from "../constants";
+import { PARKRUN_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_NEAREST_COLOUR, PARKRUN_LAYER_SIZE, CLUSTER_RADIUS, CLUSTER_ZOOM } from "../../../constants";
 
 const ParkrunLayers = (props: IParkrunLayersProps) => {
   return (

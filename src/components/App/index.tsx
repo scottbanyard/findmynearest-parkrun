@@ -1,11 +1,12 @@
 import * as React from "react";
-import Map from "../Map"
-import { Container, StyledTypography } from "./styles";
+import Title from "../Title";
+import Map from "../Map";
+import { Container } from "./styles";
 
 export const App = () => (
   <div>
     <Container>
-      <StyledTypography>findmynearest parkrun</StyledTypography>
+      <Title/>
       <Map/>
     </Container>
   </div>

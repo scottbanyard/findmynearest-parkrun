@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Layer } from 'react-map-gl';
-import { ADDRESS_LAYER_SIZE, ADDRESS_LAYER_DEFAULT_COLOUR } from "../constants";
+import { ADDRESS_LAYER_SIZE, ADDRESS_LAYER_DEFAULT_COLOUR } from "../../../constants";
 
 const AddressLayer = () => (
   <div>

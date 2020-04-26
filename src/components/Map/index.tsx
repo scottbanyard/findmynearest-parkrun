@@ -10,8 +10,8 @@ import "./styles.css";
 import { Feature, FeatureCollection } from "geojson";
 import DistanceService from "../../services/DistanceService";
 import DirectionsService from "../../services/DirectionsService";
-import ParkrunLayers from "../ParkrunLayers";
-import AddressLayer from "../AddressLayer";
+import ParkrunLayers from "./components/ParkrunLayers";
+import AddressLayer from "./components/AddressLayer";
 import { MAP_STYLE, ADDRESS_LAYER_DEFAULT_COLOUR, ADDRESS_LAYER_SIZE, PARKRUN_GEOJSON_URL } from "../constants";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
