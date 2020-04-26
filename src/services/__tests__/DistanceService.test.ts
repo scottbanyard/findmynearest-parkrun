@@ -4,6 +4,7 @@ import mockedGeocoderItem from "../__mocks__/GeocoderItem";
 import mockedParkrunFeatureCollection from "../__mocks__/ParkrunFeatureCollection";
 import mockedParkrunFeatureCollectionWithDistances from "../__mocks__/ParkrunFeatureCollectionWithDistances";
 import mockedSortedParkrunFeatureCollection from "../__mocks__/SortedParkrunFeatureCollection";
+import { NUM_NEAREST } from "../../components/constants";
 
 describe("DistanceService", () => {
   test("Distance is calculated correctly between two valid points.", () => {
@@ -27,7 +28,7 @@ describe("DistanceService", () => {
   test("The NUM_NEAREST (3 in test env) closest parkruns are identified when given a sorted parkrun FeatureCollection.", () => {
     const parkruns = DistanceService.setNearestParkrunAttributes(mockedSortedParkrunFeatureCollection);
     const nearestParkruns = parkruns.features.filter((f) => f.properties.parkrunClose === "true");
-    expect(nearestParkruns.length).toEqual(parseInt(process.env.NUM_NEAREST));
+    expect(nearestParkruns.length).toEqual(NUM_NEAREST);
     expect(nearestParkruns[0].properties.distanceToAddress).toEqual(80);
     expect(nearestParkruns[1].properties.distanceToAddress).toEqual(400);
     expect(nearestParkruns[2].properties.distanceToAddress).toEqual(800);

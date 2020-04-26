@@ -1,8 +1,7 @@
 import { Point, FeatureCollection } from "geojson";
 import { IGeocoderItem } from "../components/Map/types";
 import { getDistance } from "geolib";
-
-const NUM_NEAREST = parseInt(process.env.NUM_NEAREST, 10);
+import { NUM_NEAREST } from "../components/constants";
 
 export default class DistanceService {
   /*

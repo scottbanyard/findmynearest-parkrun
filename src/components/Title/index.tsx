@@ -5,10 +5,10 @@ import GithubButton from "./components/GithubButton";
 const Title = () => (
   <div>
     <TitleContainer>
-      <StyledTypography>findmynearest parkrun</StyledTypography>
-      <MarginContainer>
-        <GithubButton/>
-      </MarginContainer>
+    <StyledTypography>findmynearest parkrun</StyledTypography>
+    <MarginContainer>
+      <GithubButton/>
+    </MarginContainer>
     </TitleContainer>
   </div>
 );

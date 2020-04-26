@@ -1,8 +1,7 @@
 import axios from "axios";
-
+import { MAPBOX_DIRECTIONS_URL } from "../components/constants";
 // https://api.mapbox.com/directions/v5/mapbox/walking/-0.06507%2C51.50893%3B-0.0358%2C51.5223?alternatives=true&geometries=geojson&steps=true&access_token=pk.eyJ1Ijoic2NvdHRiYW55YXJkIiwiYSI6ImNrNzdyMXhxaDAzc3AzZG1wazlnNXd5MTYifQ.VsYKGqQ7jR8gjSpv27Mb-g
 
-const MAPBOX_DIRECTIONS_URL = process.env.MAPBOX_DIRECTIONS_URL;
 const TOKEN = process.env.MAPBOX_TOKEN;
 
 export default class DirectionsService {

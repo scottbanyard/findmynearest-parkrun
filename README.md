@@ -1,5 +1,7 @@
 # findmynearest parkrun
 
+[![Build Status](https://travis-ci.com/scottbanyard/findmynearest-parkrun.svg?branch=master)](https://travis-ci.com/scottbanyard/findmynearest-parkrun)
+
 A mapping application that allows you to find your nearest parkrun from a given location.
 
 You can visit this application <a href="https://findmynearest-parkrun.firebaseapp.com/" target="_blank">here</a>.
@@ -14,6 +16,7 @@ NOTE: This project is still ongoing!
 - Implement a legend
 - ~~Aggregate parkrun feature layer on zoom~~
 - ~~Toggle clustering~~
+- Create a general config file for URLs and cluster configurations
 - Dockerise
 - (Advanced) Draw a route to get to the parkrun onto the map
 - (Advanced) Different modes of transport to consider?
@@ -34,3 +37,4 @@ NOTE: This project is still ongoing!
 - <a href="https://github.com/manuelbieh/geolib" target="_blank">geolib</a> to calculate distances between points
 - MaterialUI
 - Webpack
+- Travis CI/CD

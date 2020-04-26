@@ -8,7 +8,7 @@
     "build": "webpack --mode production",
     "test": "jest",
     "testWatch": "jest --watchAll --colors --verbose",
-    "travisTest": "npm run lint && npm run test && npm run build",
+    "travisTestBuild": "npm run lint && npm run test && npm run build",
     "deploy": "npm run lint && npm run test && npm run build && firebase deploy",
     "lint": "tslint --project ./"
   },
@@ -49,7 +49,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run travisTest"
+      "pre-commit": "npm run travisTestBuild"
     }
   }
 }
