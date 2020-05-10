@@ -33,7 +33,7 @@ const defaultState: IMapState = {
   tooltipX: null,
   tooltipY: null,
   selectedAddress: null,
-  clusterOn: true
+  clusterOn: false
 }
 
 export default class Map extends React.Component {
@@ -180,7 +180,7 @@ export default class Map extends React.Component {
         }
         <Container>
           <GeocoderContainer>
-            <StyledTypography>enter and select address</StyledTypography>
+            <StyledTypography>enter and select an address</StyledTypography>
             <Geocoder
               mapboxApiAccessToken={ TOKEN }
               onSelected={ this.onSelectAddress }
