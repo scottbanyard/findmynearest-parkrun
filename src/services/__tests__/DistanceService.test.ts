@@ -25,7 +25,7 @@ describe("DistanceService", () => {
     expect(parkruns).toEqual(mockedSortedParkrunFeatureCollection);
   })
 
-  test("The NUM_NEAREST (3 in test env) closest parkruns are identified when given a sorted parkrun FeatureCollection.", () => {
+  test("The NUM_NEAREST (defined as a constant) closest parkruns are identified when given a sorted parkrun FeatureCollection.", () => {
     const parkruns = DistanceService.setNearestParkrunAttributes(mockedSortedParkrunFeatureCollection);
     const nearestParkruns = parkruns.features.filter((f) => f.properties.parkrunClose === "true");
     expect(nearestParkruns.length).toEqual(NUM_NEAREST);
