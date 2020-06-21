@@ -4,4 +4,4 @@ dist/bundle.js
 .env
 .firebase
 *.log
-resources/
+*.mov
