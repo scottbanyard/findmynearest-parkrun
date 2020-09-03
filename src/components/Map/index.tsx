@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactMapGL, { Source, Layer, NavigationControl, PointerEvent } from 'react-map-gl';
 import { IMapState, IViewport, IGeocoderItem } from "./types";
-import { Container, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText, GeocoderContainer, StyledTypography, StyledClusterToggleContainer, StyledFormControlLabel } from "./styles";
+import { Container, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText, GeocoderContainer, StyledTypography, StyledClusterToggleContainer, StyledFormControlLabel, MapContainer } from "./styles";
 import axios from "axios";
 import Switch from '@material-ui/core/Switch';
 // @ts-ignore
@@ -24,7 +24,7 @@ const defaultState: IMapState = {
     bearing: 0,
     pitch: 0,
     width: "100%",
-    height: "50vh"
+    height: "70vh"
   },
   error: undefined,
   parkrunData: null,
@@ -42,7 +42,6 @@ export default class Map extends React.Component {
   componentDidMount = async () => {
     try {
       const parkRunResponse = await axios.get(PARKRUN_GEOJSON_URL);
-      console.log(parkRunResponse.data);
       this.setState({
         parkrunData: parkRunResponse && parkRunResponse.data ? parkRunResponse.data.events : null
       })
@@ -190,41 +189,43 @@ export default class Map extends React.Component {
               transitionDuration={ 3000 }
             />
           </GeocoderContainer>
-          <ReactMapGL
-            {...viewport}
-            mapStyle={ MAP_STYLE }
-            mapboxApiAccessToken={ TOKEN }
-            onHover={ this.onHover }
-            onViewportChange={ this.updateViewport }>
-              <NavContainer>
-                <NavigationControl/>
-              </NavContainer>
+          <MapContainer>
+            <ReactMapGL
+              {...viewport}
+              mapStyle={ MAP_STYLE }
+              mapboxApiAccessToken={ TOKEN }
+              onHover={ this.onHover }
+              onViewportChange={ this.updateViewport }>
+                <NavContainer>
+                  <NavigationControl/>
+                </NavContainer>
 
-              <StyledClusterToggleContainer>
-                <StyledFormControlLabel
-                  control={
-                    <Switch
-                      checked={clusterOn}
-                      onChange={this.handleClusterToggle}
-                      name="clusterToggle"
-                      color="primary"
-                      inputProps={{ "aria-label": "Toggle Cluster" }}
-                    />
-                 }
-                 label="cluster"
-                 labelPlacement="start"
-                />
-              </StyledClusterToggleContainer>
+                <StyledClusterToggleContainer>
+                  <StyledFormControlLabel
+                    control={
+                      <Switch
+                        checked={clusterOn}
+                        onChange={this.handleClusterToggle}
+                        name="clusterToggle"
+                        color="primary"
+                        inputProps={{ "aria-label": "Toggle Cluster" }}
+                      />
+                   }
+                   label="cluster"
+                   labelPlacement="start"
+                  />
+                </StyledClusterToggleContainer>
 
-              <ParkrunLayers cluster={ clusterOn } parkrunData={ parkrunData }/>
+                <ParkrunLayers cluster={ clusterOn } parkrunData={ parkrunData }/>
 
-              <Source id="address-geojson" type="geojson" data={ selectedAddress as any }>
-                <AddressLayer />
-              </Source>
+                <Source id="address-geojson" type="geojson" data={ selectedAddress as any }>
+                  <AddressLayer />
+                </Source>
 
-              { this.renderTooltip() }
+                { this.renderTooltip() }
 
-          </ReactMapGL>
+            </ReactMapGL>
+          </MapContainer>
         </Container>
       </div>
     );

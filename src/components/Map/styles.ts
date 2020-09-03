@@ -4,6 +4,7 @@ import { Typography, FormControlLabel } from "@material-ui/core"
 
 export const Container = styled.div`
   margin-top: 40px;
+  position: relative;
 `;
 
 export const StyledGeolocateControl = styled(GeolocateControl)`
@@ -79,4 +80,8 @@ export const StyledTooltipText = styled(Typography)`
 
 export const GeocoderContainer = styled.div`
   margin-bottom: 40px;
+`;
+
+export const MapContainer = styled.div`
+  padding-top: 30px;
 `;
