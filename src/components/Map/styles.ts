@@ -14,7 +14,7 @@ export const StyledGeolocateControl = styled(GeolocateControl)`
   margin: 10px;
 `;
 
-export const StyledClusterToggleContainer = styled.div`
+export const StyledTopRightContainer = styled.div`
   position: absolute;
   top: 0;
   right: 0;

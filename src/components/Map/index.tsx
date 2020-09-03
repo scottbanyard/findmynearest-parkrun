@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactMapGL, { Source, Layer, NavigationControl, PointerEvent } from 'react-map-gl';
 import { IMapState, IViewport, IGeocoderItem } from "./types";
-import { Container, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText, GeocoderContainer, StyledTypography, StyledClusterToggleContainer, StyledFormControlLabel, MapContainer } from "./styles";
+import { Container, StyledErrorTypography, NavContainer, StyledTooltip, StyledTooltipText, GeocoderContainer, StyledTypography, StyledTopRightContainer, StyledFormControlLabel, MapContainer } from "./styles";
 import axios from "axios";
 import Switch from '@material-ui/core/Switch';
 // @ts-ignore
@@ -12,6 +12,7 @@ import DistanceService from "../../services/DistanceService";
 import DirectionsService from "../../services/DirectionsService";
 import ParkrunLayers from "./components/ParkrunLayers";
 import AddressLayer from "./components/AddressLayer";
+import Legend from "./components/Legend";
 import { MAP_STYLE, ADDRESS_LAYER_DEFAULT_COLOUR, ADDRESS_LAYER_SIZE, PARKRUN_GEOJSON_URL } from "../constants";
 
 const TOKEN = process.env.MAPBOX_TOKEN;
@@ -163,6 +164,13 @@ export default class Map extends React.Component {
     );
   }
 
+  renderLegend = () => {
+    const { clusterOn } = this.state;
+    return (
+      <Legend cluster={clusterOn} />
+    )
+  }
+
   handleClusterToggle = () => {
     this.setState({ clusterOn: !this.state.clusterOn });
   }
@@ -200,7 +208,7 @@ export default class Map extends React.Component {
                   <NavigationControl/>
                 </NavContainer>
 
-                <StyledClusterToggleContainer>
+                <StyledTopRightContainer>
                   <StyledFormControlLabel
                     control={
                       <Switch
@@ -214,7 +222,10 @@ export default class Map extends React.Component {
                    label="cluster"
                    labelPlacement="start"
                   />
-                </StyledClusterToggleContainer>
+
+                  { this.renderLegend() }
+
+                </StyledTopRightContainer>
 
                 <ParkrunLayers cluster={ clusterOn } parkrunData={ parkrunData }/>
 

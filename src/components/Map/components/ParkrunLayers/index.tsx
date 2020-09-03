@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Layer, Source } from 'react-map-gl';
 import { IParkrunLayersProps } from "./types";
-import { PARKRUN_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_NEAREST_COLOUR, PARKRUN_LAYER_SIZE, CLUSTER_RADIUS, CLUSTER_ZOOM } from "../../../constants";
+import { PARKRUN_LAYER_DEFAULT_COLOUR, PARKRUN_LAYER_NEAREST_COLOUR, PARKRUNS_CLUSTERED_FIRST_STEP_COLOUR, PARKRUNS_CLUSTERED_SECOND_STEP_COLOUR, PARKRUNS_CLUSTERED_THIRD_STEP_COLOUR, PARKRUN_LAYER_SIZE, CLUSTER_RADIUS, CLUSTER_ZOOM } from "../../../constants";
 
 const ParkrunLayers = (props: IParkrunLayersProps) => {
   return (
@@ -35,7 +35,7 @@ const ParkrunLayers = (props: IParkrunLayersProps) => {
 
       <Source id="parkrun-geojson-clustered" type="geojson" data={props.parkrunData} cluster={true} clusterMaxZoom={CLUSTER_ZOOM} clusterRadius={CLUSTER_RADIUS}>
 
-        {/* UNCLUSTERED PARKRUN POINT LAYER */}
+        {/* UNCLUSTERED PARKRUN POINT LAYER (if zoomed in) */}
         <Layer
           id="parkrun-unclustered-point-in-cluster"
           type="circle"
@@ -79,11 +79,11 @@ const ParkrunLayers = (props: IParkrunLayersProps) => {
             "circle-color": [
               "step",
               ["get", "point_count"],
-              "#51bbd6",
+              PARKRUNS_CLUSTERED_FIRST_STEP_COLOUR,
               100,
-              "#f1f075",
+              PARKRUNS_CLUSTERED_SECOND_STEP_COLOUR,
               750,
-              "#f28cb1"
+              PARKRUNS_CLUSTERED_THIRD_STEP_COLOUR
             ],
             "circle-stroke-width": 1,
             "circle-stroke-color": "#fff"
