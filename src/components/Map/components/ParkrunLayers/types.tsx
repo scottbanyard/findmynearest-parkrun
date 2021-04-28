@@ -1,4 +1,4 @@
-import { FeatureCollection } from "geojson";
+import { FeatureCollection } from 'geojson';
 
 export interface IParkrunLayersProps {
   cluster: boolean;

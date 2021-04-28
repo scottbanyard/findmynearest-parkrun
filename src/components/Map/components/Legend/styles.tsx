@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { Typography } from "@material-ui/core"
-import { ILegendColour } from "./types";
+import styled from 'styled-components';
+import { Typography } from '@material-ui/core';
+import { ILegendColour } from './types';
 
 export const LegendContainer = styled.div`
   background: white;
@@ -34,4 +34,4 @@ export const LegendColour = styled.div`
   border-radius: 5px;
   margin-right: 9px;
   margin-top: 5px;
-`
+`;

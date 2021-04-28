@@ -1,4 +1,4 @@
-import { Point, Feature, FeatureCollection } from "geojson";
+import { Point, Feature, FeatureCollection } from 'geojson';
 
 export interface IMapState {
   viewport: IViewport;
@@ -28,7 +28,7 @@ export interface IViewport {
   transitionDuration?: any;
   transitionEasing?: any;
   transitionInterpolator?: any;
-  transitionInterruption?: any
+  transitionInterruption?: any;
 }
 
 export interface IGeocoderItem {

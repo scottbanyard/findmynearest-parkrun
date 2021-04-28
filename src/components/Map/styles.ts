@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { GeolocateControl } from "react-map-gl";
-import { Typography, FormControlLabel } from "@material-ui/core"
+import styled from 'styled-components';
+import { GeolocateControl } from 'react-map-gl';
+import { Typography, FormControlLabel } from '@material-ui/core';
 
 export const Container = styled.div`
   margin-top: 40px;
@@ -70,12 +70,12 @@ export const StyledTooltip = styled.div`
 `;
 
 export const StyledTooltipText = styled(Typography)`
-&& {
-  color: black;
-  font-weight: 300;
-  font-size: 11px;
-  padding: 2px;
-}
+  && {
+    color: black;
+    font-weight: 300;
+    font-size: 11px;
+    padding: 2px;
+  }
 `;
 
 export const GeocoderContainer = styled.div`

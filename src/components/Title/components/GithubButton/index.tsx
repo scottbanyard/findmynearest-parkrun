@@ -1,6 +1,6 @@
-import * as React from "react";
-import { IconButton } from "@material-ui/core";
-import { Github } from "./styles";
+import * as React from 'react';
+import { IconButton } from '@material-ui/core';
+import { Github } from './styles';
 
 const GithubButton = () => {
   return (
@@ -13,7 +13,7 @@ const GithubButton = () => {
         <Github />
       </IconButton>
     </div>
-  )
-}
+  );
+};
 
 export default GithubButton;

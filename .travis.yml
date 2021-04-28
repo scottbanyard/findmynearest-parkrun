@@ -3,7 +3,9 @@ node_js:
 - node
 script:
 - echo MAPBOX_TOKEN=$MAPBOX_TOKEN >> .env
-- npm run travisTestBuild
+- npm run lint
+- npm run test
+- npm build
 deploy:
   provider: firebase
   skip_cleanup: true

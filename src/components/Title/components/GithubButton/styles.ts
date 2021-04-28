@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { IoLogoGithub } from "react-icons/io";
+import styled from 'styled-components';
+import { IoLogoGithub } from 'react-icons/io';
 
 export const Github = styled(IoLogoGithub)`
   && {
