@@ -29,12 +29,7 @@ import DirectionsService from '../../services/DirectionsService';
 import ParkrunLayers from './components/ParkrunLayers';
 import AddressLayer from './components/AddressLayer';
 import Legend from './components/Legend';
-import {
-  MAP_STYLE,
-  ADDRESS_LAYER_DEFAULT_COLOUR,
-  ADDRESS_LAYER_SIZE,
-  PARKRUN_GEOJSON_URL
-} from '../constants';
+import { MAP_STYLE, URLs, LayerIDs } from '../constants';
 
 const TOKEN = process.env.MAPBOX_TOKEN;
 
@@ -50,8 +45,7 @@ const defaultState: IMapState = {
   },
   error: undefined,
   parkrunData: null,
-  hoveredParkrunFeature: null,
-  hoveredAddressFeature: null,
+  clickedFeature: null,
   tooltipX: null,
   tooltipY: null,
   selectedAddress: null,
@@ -61,9 +55,10 @@ const defaultState: IMapState = {
 export default class Map extends React.Component {
   readonly state = defaultState;
 
+  // On mount, retrieve all of the parkrun data and set to state
   componentDidMount = async () => {
     try {
-      const parkRunResponse = await axios.get(PARKRUN_GEOJSON_URL);
+      const parkRunResponse = await axios.get(URLs.ParkrunGeoJSON);
       this.setState({
         parkrunData:
           parkRunResponse && parkRunResponse.data
@@ -78,36 +73,36 @@ export default class Map extends React.Component {
     }
   };
 
+  // Update the viewport everytime we move the map
   updateViewport = (viewport: IViewport) => {
     this.setState({
       viewport
     });
   };
 
+  // React-Map-GL's onHover - render tooltips / pop-ups on features when hovered
   onHover = (event: PointerEvent) => {
     const { features, srcEvent } = event;
-    const hoveredParkrunFeature =
-      features &&
-      features.find(
-        (f: any) =>
-          f.layer.id === 'parkrun-unclustered-point' ||
-          f.layer.id === 'parkrun-unclustered-point-in-cluster'
-      );
-    const hoveredAddressFeature =
-      features && features.find((f: any) => f.layer.id === 'address-layer');
-
-    this.setState({
-      hoveredParkrunFeature,
-      hoveredAddressFeature,
-      tooltipX: srcEvent.offsetX,
-      tooltipY: srcEvent.offsetY
-    });
+    if (features) {
+      const clickedFeature = features[0];
+      if (this.validateTooltipCoords(srcEvent.offsetX, srcEvent.offsetY)) {
+        this.setState({
+          clickedFeature,
+          tooltipX: srcEvent.offsetX,
+          tooltipY: srcEvent.offsetY
+        });
+      }
+    }
   };
 
+  // React-Map-GL can sometimes return the mouse pointer at the wrong location
+  // and tell us it in the top left corner of the map (which is incorrect) -
+  // don't render these anonamalies
   validateTooltipCoords = (x: number, y: number) => {
-    return (x > 3 || x < -3) && (y > 3 || y < -3);
+    return (x > 15 || x < -15) && (y > 15 || y < -15);
   };
 
+  // Returns the closest parkruns to the address in state
   calculateClosestParkruns = () => {
     const { selectedAddress, parkrunData } = this.state;
     const closestParkruns = DistanceService.getNearestParkruns(
@@ -118,6 +113,7 @@ export default class Map extends React.Component {
     return closestParkruns;
   };
 
+  // Calculate the routes to the given parkruns
   calculateRoutes = async (item: IGeocoderItem, parkruns: Feature[]) => {
     try {
       const promises = parkruns.map((p) =>
@@ -138,6 +134,7 @@ export default class Map extends React.Component {
     return item;
   };
 
+  // Selecting an address in the geocoder will search for nearest parkruns
   onSelectAddress = (viewport: IViewport, item: IGeocoderItem) => {
     this.resetError();
     this.updateViewport({ ...this.state.viewport, ...viewport });
@@ -147,6 +144,7 @@ export default class Map extends React.Component {
     });
   };
 
+  // Finds the closest parkruns and renders them correctly
   setNearestParkruns = () => {
     try {
       const closestParkruns = this.calculateClosestParkruns();
@@ -165,72 +163,79 @@ export default class Map extends React.Component {
     }
   };
 
+  // Resets the error state
   resetError = () => {
     this.setState({ error: undefined });
   };
 
+  // Renders the pop-up for the hovered feature; need to render different fields
+  // for different layers (parkrun vs an address layer)
   renderTooltip = () => {
-    const {
-      hoveredParkrunFeature,
-      hoveredAddressFeature,
-      tooltipX,
-      tooltipY
-    } = this.state;
-    return (
-      (hoveredParkrunFeature || hoveredAddressFeature) &&
-      this.validateTooltipCoords(tooltipX, tooltipY) && (
-        <StyledTooltip style={{ left: tooltipX, top: tooltipY }}>
-          {hoveredParkrunFeature
-            ? this.renderParkrunTooltip(hoveredParkrunFeature)
-            : hoveredAddressFeature
-            ? this.renderAddressTooltip(hoveredAddressFeature)
-            : null}
-        </StyledTooltip>
-      )
-    );
+    const { clickedFeature, tooltipX, tooltipY } = this.state;
+    if (clickedFeature && clickedFeature.layer && clickedFeature.layer.id) {
+      switch (clickedFeature.layer.id) {
+        case LayerIDs.Parkrun || LayerIDs.ParkrunInCluster:
+          return (
+            <StyledTooltip style={{ left: tooltipX, top: tooltipY }}>
+              {this.renderParkrunTooltip(clickedFeature)}
+            </StyledTooltip>
+          );
+
+        case LayerIDs.Address:
+          return (
+            <StyledTooltip style={{ left: tooltipX, top: tooltipY }}>
+              {this.renderAddressTooltip(clickedFeature)}
+            </StyledTooltip>
+          );
+
+        default:
+          return;
+      }
+    }
   };
 
-  renderAddressTooltip = (hoveredFeature: Feature) => {
+  // Renders an address layer pop-up
+  renderAddressTooltip = (feature: Feature) => {
     return (
       <div>
         <StyledTooltipText>
-          ID: {hoveredFeature.properties.id}
-        </StyledTooltipText>
-        <StyledTooltipText>
-          Name: {hoveredFeature.properties.name}
+          Address: {feature.properties.name}
         </StyledTooltipText>
       </div>
     );
   };
 
-  renderParkrunTooltip = (hoveredFeature: Feature) => {
+  // Renders a parkrun layer pop-up
+  renderParkrunTooltip = (feature: Feature) => {
     return (
       <div>
         <StyledTooltipText>
-          Name: {hoveredFeature.properties.EventLongName}
+          Name: {feature.properties.EventLongName}
         </StyledTooltipText>
         <StyledTooltipText>
-          Location: {hoveredFeature.properties.EventLocation}
+          Location: {feature.properties.EventLocation}
         </StyledTooltipText>
-        {hoveredFeature.properties.distanceToAddress ? (
+        {feature.properties.distanceToAddress ? (
           <StyledTooltipText>
-            Distance: {hoveredFeature.properties.distanceToAddress} meters
+            Distance: {feature.properties.distanceToAddress} meters
           </StyledTooltipText>
         ) : null}
-        {hoveredFeature.properties.position > 0 ? (
+        {feature.properties.position > 0 ? (
           <StyledTooltipText>
-            Position: {hoveredFeature.properties.position}
+            Position: {feature.properties.position}
           </StyledTooltipText>
         ) : null}
       </div>
     );
   };
 
+  // Renders the legend - this can differ dependening if the user has clustered
   renderLegend = () => {
     const { clusterOn } = this.state;
     return <Legend cluster={clusterOn} />;
   };
 
+  // Turn the cluster toggle on and off
   handleClusterToggle = () => {
     this.setState({ clusterOn: !this.state.clusterOn });
   };
@@ -239,9 +244,9 @@ export default class Map extends React.Component {
     const { viewport, parkrunData, selectedAddress, clusterOn } = this.state;
     return (
       <div>
-        {this.state.error && this.state.error.length > 0 ? (
+        {this.state.error && this.state.error.length && (
           <StyledErrorTypography>{this.state.error}</StyledErrorTypography>
-        ) : null}
+        )}
         <Container>
           <GeocoderContainer>
             <StyledTypography>enter and select an address</StyledTypography>

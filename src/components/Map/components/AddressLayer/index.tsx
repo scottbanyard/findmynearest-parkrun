@@ -1,19 +1,16 @@
 import * as React from 'react';
 import { Layer } from 'react-map-gl';
-import {
-  ADDRESS_LAYER_SIZE,
-  ADDRESS_LAYER_DEFAULT_COLOUR
-} from '../../../constants';
+import { PointColours, LayerIDs, PointSizes } from '../../../constants';
 
 const AddressLayer = () => (
   <div>
     <Layer
-      id="address-layer"
+      id={LayerIDs.Address}
       type="circle"
       source="address-geojson"
       paint={{
-        'circle-color': ADDRESS_LAYER_DEFAULT_COLOUR,
-        'circle-radius': ADDRESS_LAYER_SIZE
+        'circle-color': PointColours.AddressDefault,
+        'circle-radius': PointSizes.Address
       }}
     />
   </div>

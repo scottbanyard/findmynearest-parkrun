@@ -3,8 +3,7 @@ import { Point, Feature, FeatureCollection } from 'geojson';
 export interface IMapState {
   viewport: IViewport;
   parkrunData: FeatureCollection;
-  hoveredParkrunFeature: Feature;
-  hoveredAddressFeature: Feature;
+  clickedFeature: any;
   error?: string;
   tooltipX?: number;
   tooltipY?: number;
