@@ -10,8 +10,6 @@ import {
   Container,
   StyledErrorTypography,
   NavContainer,
-  StyledTooltip,
-  StyledTooltipText,
   GeocoderContainer,
   StyledTypography,
   StyledTopRightContainer,
@@ -29,6 +27,7 @@ import ParkrunService from '../../services/ParkrunService';
 import ParkrunLayers from './components/ParkrunLayers';
 import AddressLayer from './components/AddressLayer';
 import Legend from './components/Legend';
+import Popup from './components/Popup';
 import { MAP_STYLE, URLs, LayerIDs } from '../constants';
 
 const TOKEN = process.env.MAPBOX_TOKEN;
@@ -165,54 +164,11 @@ export default class Map extends React.Component {
 
   // Renders the pop-up for the hovered feature; need to render different fields
   // for different layers (parkrun vs an address layer)
-  renderTooltip = () => {
+  renderMarkerPopup = () => {
     const { clickedFeature, tooltipX, tooltipY } = this.state;
     if (clickedFeature && clickedFeature.layer && clickedFeature.layer.id) {
-      switch (clickedFeature.layer.id) {
-        case LayerIDs.Parkrun:
-        case LayerIDs.ParkrunInCluster:
-          return this.renderParkrunTooltip(clickedFeature, tooltipX, tooltipY);
-        case LayerIDs.Address:
-          return this.renderAddressTooltip(clickedFeature, tooltipX, tooltipY);
-        default:
-          return;
-      }
+      return <Popup x={tooltipX} y={tooltipY} feature={clickedFeature} />;
     }
-  };
-
-  // Renders an address layer pop-up
-  renderAddressTooltip = (feature: Feature, x: number, y: number) => {
-    return (
-      <StyledTooltip style={{ left: x, top: y }}>
-        <StyledTooltipText>
-          Address: {feature.properties.name}
-        </StyledTooltipText>
-      </StyledTooltip>
-    );
-  };
-
-  // Renders a parkrun layer pop-up
-  renderParkrunTooltip = (feature: Feature, x: number, y: number) => {
-    return (
-      <StyledTooltip style={{ left: x, top: y }}>
-        <StyledTooltipText>
-          Name: {feature.properties.EventLongName}
-        </StyledTooltipText>
-        <StyledTooltipText>
-          Location: {feature.properties.EventLocation}
-        </StyledTooltipText>
-        {feature.properties.distanceToAddress && (
-          <StyledTooltipText>
-            Distance: {feature.properties.distanceToAddress} meters
-          </StyledTooltipText>
-        )}
-        {feature.properties.position > 0 && (
-          <StyledTooltipText>
-            Position: {feature.properties.position}
-          </StyledTooltipText>
-        )}
-      </StyledTooltip>
-    );
   };
 
   // Renders the legend - this can differ dependening if the user has clustered
@@ -285,7 +241,7 @@ export default class Map extends React.Component {
                 <AddressLayer />
               </Source>
 
-              {this.renderTooltip()}
+              {this.renderMarkerPopup()}
             </ReactMapGL>
           </MapContainer>
         </Container>
