@@ -169,7 +169,8 @@ export default class Map extends React.Component {
     const { clickedFeature, tooltipX, tooltipY } = this.state;
     if (clickedFeature && clickedFeature.layer && clickedFeature.layer.id) {
       switch (clickedFeature.layer.id) {
-        case LayerIDs.Parkrun || LayerIDs.ParkrunInCluster:
+        case LayerIDs.Parkrun:
+        case LayerIDs.ParkrunInCluster:
           return (
             <StyledTooltip style={{ left: tooltipX, top: tooltipY }}>
               {this.renderParkrunTooltip(clickedFeature)}
