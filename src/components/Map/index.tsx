@@ -193,8 +193,8 @@ export default class Map extends React.Component {
         label="cluster"
         labelPlacement="start"
       />
-    )
-  }
+    );
+  };
 
   // Turn the cluster toggle on and off
   handleClusterToggle = () => {
