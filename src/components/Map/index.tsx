@@ -10,22 +10,22 @@ import {
   Container,
   StyledErrorTypography,
   NavContainer,
-  GeocoderContainer,
-  StyledTypography,
   StyledTopRightContainer,
   MapContainer
 } from './styles';
-// @ts-ignore
-import Geocoder from 'react-mapbox-gl-geocoder';
 import './styles.css';
 import { Feature, FeatureCollection } from 'geojson';
 import DistanceService from '../../services/DistanceService';
 import DirectionsService from '../../services/DirectionsService';
 import ParkrunService from '../../services/ParkrunService';
-import { ParkrunLayers, AddressLayer } from './components/Layers';
-import Legend from './components/Legend';
-import Popup from './components/Popup';
-import ClusterToggle from './components/ClusterToggle';
+import {
+  ParkrunLayers,
+  AddressLayer,
+  Legend,
+  Popup,
+  ClusterToggle,
+  AddressFinder
+} from './components';
 import { MAP_STYLE, URLs, LayerIDs } from '../constants';
 
 const TOKEN = process.env.MAPBOX_TOKEN;
@@ -185,28 +185,37 @@ export default class Map extends React.Component {
     this.setState({ clusterOn: !this.state.clusterOn });
   };
 
+  // Renders the GeoJSON layers (aka the Parkrun and Address data points)
+  renderLayers = () => (
+    <div>
+      <ParkrunLayers
+        cluster={this.state.clusterOn}
+        parkrunData={this.state.parkrunData}
+      />
+      <Source
+        id="address-geojson"
+        type="geojson"
+        data={this.state.selectedAddress as any}
+      >
+        <AddressLayer />
+      </Source>
+    </div>
+  );
+
   render() {
-    const { viewport, parkrunData, selectedAddress, clusterOn } = this.state;
     return (
       <div>
         {this.state.error && this.state.error.length && (
           <StyledErrorTypography>{this.state.error}</StyledErrorTypography>
         )}
         <Container>
-          <GeocoderContainer>
-            <StyledTypography>enter and select an address</StyledTypography>
-            <Geocoder
-              mapboxApiAccessToken={TOKEN}
-              onSelected={this.onSelectAddress}
-              hideOnSelect={true}
-              viewport={viewport}
-              updateInputOnSelect={true}
-              transitionDuration={3000}
-            />
-          </GeocoderContainer>
+          <AddressFinder
+            onSelectAddress={this.onSelectAddress}
+            viewport={this.state.viewport}
+          />
           <MapContainer>
             <ReactMapGL
-              {...viewport}
+              {...this.state.viewport}
               mapStyle={MAP_STYLE}
               mapboxApiAccessToken={TOKEN}
               onHover={this.onHover}
@@ -221,16 +230,7 @@ export default class Map extends React.Component {
                 {this.renderLegend()}
               </StyledTopRightContainer>
 
-              <ParkrunLayers cluster={clusterOn} parkrunData={parkrunData} />
-
-              <Source
-                id="address-geojson"
-                type="geojson"
-                data={selectedAddress as any}
-              >
-                <AddressLayer />
-              </Source>
-
+              {this.renderLayers()}
               {this.renderMarkerPopup()}
             </ReactMapGL>
           </MapContainer>
