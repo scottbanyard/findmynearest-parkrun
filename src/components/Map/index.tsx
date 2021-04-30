@@ -177,6 +177,25 @@ export default class Map extends React.Component {
     return <Legend cluster={clusterOn} />;
   };
 
+  renderClusterToggle = () => {
+    const { clusterOn } = this.state;
+    return (
+      <StyledFormControlLabel
+        control={
+          <Switch
+            checked={clusterOn}
+            onChange={this.handleClusterToggle}
+            name="clusterToggle"
+            color="primary"
+            inputProps={{ 'aria-label': 'Toggle Cluster' }}
+          />
+        }
+        label="cluster"
+        labelPlacement="start"
+      />
+    )
+  }
+
   // Turn the cluster toggle on and off
   handleClusterToggle = () => {
     this.setState({ clusterOn: !this.state.clusterOn });
@@ -214,20 +233,7 @@ export default class Map extends React.Component {
               </NavContainer>
 
               <StyledTopRightContainer>
-                <StyledFormControlLabel
-                  control={
-                    <Switch
-                      checked={clusterOn}
-                      onChange={this.handleClusterToggle}
-                      name="clusterToggle"
-                      color="primary"
-                      inputProps={{ 'aria-label': 'Toggle Cluster' }}
-                    />
-                  }
-                  label="cluster"
-                  labelPlacement="start"
-                />
-
+                {this.renderClusterToggle()}
                 {this.renderLegend()}
               </StyledTopRightContainer>
 
