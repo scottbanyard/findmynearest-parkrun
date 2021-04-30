@@ -6,7 +6,7 @@ import {
   PointSizes,
   Cluster,
   LayerIDs
-} from '../../../constants';
+} from '../../../../constants';
 
 const ParkrunLayers = (props: IParkrunLayersProps) => {
   return (

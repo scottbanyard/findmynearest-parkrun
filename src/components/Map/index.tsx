@@ -13,10 +13,8 @@ import {
   GeocoderContainer,
   StyledTypography,
   StyledTopRightContainer,
-  StyledFormControlLabel,
   MapContainer
 } from './styles';
-import Switch from '@material-ui/core/Switch';
 // @ts-ignore
 import Geocoder from 'react-mapbox-gl-geocoder';
 import './styles.css';
@@ -24,10 +22,10 @@ import { Feature, FeatureCollection } from 'geojson';
 import DistanceService from '../../services/DistanceService';
 import DirectionsService from '../../services/DirectionsService';
 import ParkrunService from '../../services/ParkrunService';
-import ParkrunLayers from './components/ParkrunLayers';
-import AddressLayer from './components/AddressLayer';
+import { ParkrunLayers, AddressLayer } from './components/Layers';
 import Legend from './components/Legend';
 import Popup from './components/Popup';
+import ClusterToggle from './components/ClusterToggle';
 import { MAP_STYLE, URLs, LayerIDs } from '../constants';
 
 const TOKEN = process.env.MAPBOX_TOKEN;
@@ -172,29 +170,15 @@ export default class Map extends React.Component {
   };
 
   // Renders the legend - this can differ dependening if the user has clustered
-  renderLegend = () => {
-    const { clusterOn } = this.state;
-    return <Legend cluster={clusterOn} />;
-  };
+  renderLegend = () => <Legend cluster={this.state.clusterOn} />;
 
-  renderClusterToggle = () => {
-    const { clusterOn } = this.state;
-    return (
-      <StyledFormControlLabel
-        control={
-          <Switch
-            checked={clusterOn}
-            onChange={this.handleClusterToggle}
-            name="clusterToggle"
-            color="primary"
-            inputProps={{ 'aria-label': 'Toggle Cluster' }}
-          />
-        }
-        label="cluster"
-        labelPlacement="start"
-      />
-    );
-  };
+  // Renders the cluster toggle
+  renderClusterToggle = () => (
+    <ClusterToggle
+      clusterOn={this.state.clusterOn}
+      onClusterToggle={this.handleClusterToggle}
+    />
+  );
 
   // Turn the cluster toggle on and off
   handleClusterToggle = () => {

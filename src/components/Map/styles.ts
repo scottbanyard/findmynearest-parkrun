@@ -23,17 +23,6 @@ export const StyledTopRightContainer = styled.div`
   margin-top: 15px;
 `;
 
-export const StyledFormControlLabel = styled(FormControlLabel)`
-  && {
-    background-color: white;
-    border: black;
-    border-radius: 26px;
-    margin-right: 0px;
-    width: 100%;
-    font-weight: 300;
-  }
-`;
-
 export const NavContainer = styled.div`
   position: absolute;
   left: 0;

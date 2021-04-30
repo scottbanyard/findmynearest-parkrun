@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Layer } from 'react-map-gl';
-import { PointColours, LayerIDs, PointSizes } from '../../../constants';
+import { PointColours, LayerIDs, PointSizes } from '../../../../constants';
 
 const AddressLayer = () => (
   <div>
