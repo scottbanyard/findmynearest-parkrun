@@ -1,7 +1,4 @@
-import AddressLayer from "./AddressLayer";
-import ParkrunLayers from "./ParkrunLayers";
+import AddressLayer from './AddressLayer';
+import ParkrunLayers from './ParkrunLayers';
 
-export {
-  AddressLayer,
-  ParkrunLayers
-}
+export { AddressLayer, ParkrunLayers };
