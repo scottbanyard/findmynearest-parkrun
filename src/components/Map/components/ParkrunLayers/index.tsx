@@ -64,7 +64,6 @@ const ParkrunLayers = (props: IParkrunLayersProps) => {
               PointColours.ParkrunNearest,
               'false',
               PointColours.ParkrunDefault,
-              ,
               /* other */ PointColours.ParkrunDefault
             ],
             'circle-stroke-width': 1,

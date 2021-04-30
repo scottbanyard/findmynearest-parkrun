@@ -18,7 +18,6 @@ import {
   StyledFormControlLabel,
   MapContainer
 } from './styles';
-import axios from 'axios';
 import Switch from '@material-ui/core/Switch';
 // @ts-ignore
 import Geocoder from 'react-mapbox-gl-geocoder';
@@ -26,6 +25,7 @@ import './styles.css';
 import { Feature, FeatureCollection } from 'geojson';
 import DistanceService from '../../services/DistanceService';
 import DirectionsService from '../../services/DirectionsService';
+import ParkrunService from '../../services/ParkrunService';
 import ParkrunLayers from './components/ParkrunLayers';
 import AddressLayer from './components/AddressLayer';
 import Legend from './components/Legend';
@@ -58,13 +58,8 @@ export default class Map extends React.Component {
   // On mount, retrieve all of the parkrun data and set to state
   componentDidMount = async () => {
     try {
-      const parkRunResponse = await axios.get(URLs.ParkrunGeoJSON);
-      this.setState({
-        parkrunData:
-          parkRunResponse && parkRunResponse.data
-            ? parkRunResponse.data.events
-            : null
-      });
+      const parkruns = await ParkrunService.getParkruns();
+      this.setState({ parkrunData: parkruns });
     } catch (e) {
       console.error(e);
       this.setState({
