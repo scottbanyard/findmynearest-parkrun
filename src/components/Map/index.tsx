@@ -171,19 +171,9 @@ export default class Map extends React.Component {
       switch (clickedFeature.layer.id) {
         case LayerIDs.Parkrun:
         case LayerIDs.ParkrunInCluster:
-          return (
-            <StyledTooltip style={{ left: tooltipX, top: tooltipY }}>
-              {this.renderParkrunTooltip(clickedFeature)}
-            </StyledTooltip>
-          );
-
+          return this.renderParkrunTooltip(clickedFeature, tooltipX, tooltipY);
         case LayerIDs.Address:
-          return (
-            <StyledTooltip style={{ left: tooltipX, top: tooltipY }}>
-              {this.renderAddressTooltip(clickedFeature)}
-            </StyledTooltip>
-          );
-
+          return this.renderAddressTooltip(clickedFeature, tooltipX, tooltipY);
         default:
           return;
       }
@@ -191,37 +181,37 @@ export default class Map extends React.Component {
   };
 
   // Renders an address layer pop-up
-  renderAddressTooltip = (feature: Feature) => {
+  renderAddressTooltip = (feature: Feature, x: number, y: number) => {
     return (
-      <div>
+      <StyledTooltip style={{ left: x, top: y }}>
         <StyledTooltipText>
           Address: {feature.properties.name}
         </StyledTooltipText>
-      </div>
+      </StyledTooltip>
     );
   };
 
   // Renders a parkrun layer pop-up
-  renderParkrunTooltip = (feature: Feature) => {
+  renderParkrunTooltip = (feature: Feature, x: number, y: number) => {
     return (
-      <div>
+      <StyledTooltip style={{ left: x, top: y }}>
         <StyledTooltipText>
           Name: {feature.properties.EventLongName}
         </StyledTooltipText>
         <StyledTooltipText>
           Location: {feature.properties.EventLocation}
         </StyledTooltipText>
-        {feature.properties.distanceToAddress ? (
+        {feature.properties.distanceToAddress && (
           <StyledTooltipText>
             Distance: {feature.properties.distanceToAddress} meters
           </StyledTooltipText>
-        ) : null}
-        {feature.properties.position > 0 ? (
+        )}
+        {feature.properties.position > 0 && (
           <StyledTooltipText>
             Position: {feature.properties.position}
           </StyledTooltipText>
-        ) : null}
-      </div>
+        )}
+      </StyledTooltip>
     );
   };
 
