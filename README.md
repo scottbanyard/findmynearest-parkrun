@@ -12,7 +12,7 @@
 <p align="center">
 	<img
 		alt="Build Status"
-		src="https://github.com/scottbanyard/findmynearest-parkrun/actions/workflows/firebase-hosting-master.yml/badge.svg?branch=master"></a>
+		src="https://github.com/scottbanyard/findmynearest-parkrun/actions/workflows/test-build-deploy.yml/badge.svg?branch=master"></a>
 </p>
 
 <p align="center">
