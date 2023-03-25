@@ -34,7 +34,7 @@ To learn more about the features of findmynearest-parkrun, take a look at [the w
 
 ## Development setup
 
-- Install Node.js
+- Install Node.js (v16.14.2)
 - Run `npm ci` to install dependencies correctly
 - Retrieve a free Mapbox access token by <a href="https://account.mapbox.com/auth/signup/" target="\_blank">signing up</a>
 - Create a file called `.env` in the root of this repository and insert the variable `MAPBOX_TOKEN` with your Mapbox access token (e.g. MAPBOX_TOKEN="example token")
