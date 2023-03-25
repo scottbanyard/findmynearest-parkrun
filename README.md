@@ -50,5 +50,5 @@ This runs the web-application using Webpack's development server.
 - <a href="https://github.com/manuelbieh/geolib" target="\_blank">geolib</a> to calculate distances between points
 - MaterialUI
 - Webpack
-- Travis CI/CD
+- Github Actions for CI/CD
 - Docker & docker-compose
