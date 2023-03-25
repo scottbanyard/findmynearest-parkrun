@@ -35,7 +35,7 @@ To learn more about the features of findmynearest-parkrun, take a look at [the w
 ## Development setup
 
 - Install Node.js
-- Run `npm install`
+- Run `npm ci` to install dependencies correctly
 - Retrieve a free Mapbox access token by <a href="https://account.mapbox.com/auth/signup/" target="\_blank">signing up</a>
 - Create a file called `.env` in the root of this repository and insert the variable `MAPBOX_TOKEN` with your Mapbox access token (e.g. MAPBOX_TOKEN="example token")
 - Run `npm start` to get started!
@@ -43,6 +43,7 @@ To learn more about the features of findmynearest-parkrun, take a look at [the w
 This runs the web-application using Webpack's development server.
 
 ## Technologies
+
 - ReactJS
 - TypeScript (with TSlint)
 - <a href="https://github.com/uber/react-map-gl" target="\_blank">react-map-gl</a> which is a wrapper around Mapbox GL
