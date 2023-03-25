@@ -9,8 +9,11 @@
 		<a href="https://www.parkrun.org.uk/">Parkrun</a>
 	</strong>
 </p>
-
-![Build Status](https://github.com/scottbanyard/findmynearest-parkrun/actions/workflows/firebase-hosting-merge.yml/badge.svg?branch=master)
+<p align="center">
+	<img
+		alt="Build Status"
+		src="https://github.com/scottbanyard/findmynearest-parkrun/actions/workflows/firebase-hosting-master.yml/badge.svg?branch=master"></a>
+</p>
 
 <p align="center">
 	<img src="https://github.com/scottbanyard/findmynearest-parkrun/blob/master/resources/demo.gif">
@@ -47,5 +50,5 @@ This runs the web-application using Webpack's development server.
 - <a href="https://github.com/manuelbieh/geolib" target="\_blank">geolib</a> to calculate distances between points
 - MaterialUI
 - Webpack
-- Github Actions
+- Travis CI/CD
 - Docker & docker-compose
