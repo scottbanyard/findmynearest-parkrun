@@ -8,7 +8,7 @@ name: Run Tests, Linting & Build
       - '!master'
 
 jobs:
-  build_and_deploy:
+  test_and_build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Github Repo
