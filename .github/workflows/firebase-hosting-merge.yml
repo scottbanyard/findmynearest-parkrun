@@ -12,14 +12,16 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Create envfile
+      - name: Checkout Github Repo
+        uses: actions/checkout@v3
+
+      - name: Create .env file
         uses: SpicyPizza/create-envfile@v1
         with:
           envkey_MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
           file_name: .env
 
       - name: Test, Lint, & Build
-        uses: actions/checkout@v3
         run: |
           npm ci
           npm run lint
