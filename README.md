@@ -10,9 +10,7 @@
 	</strong>
 </p>
 <p align="center">
-	<a href="https://travis-ci.com/scottbanyard/findmynearest-parkrun"><img
-		alt="Build Status"
-		src="https://travis-ci.com/scottbanyard/findmynearest-parkrun.svg?branch=master"></a>
+	![Build Status](https://github.com/scottbanyard/findmynearest-parkrun/actions/workflows/firebase-hosting-merge.yml/badge.svg?branch=master)
 </p>
 
 <p align="center">
