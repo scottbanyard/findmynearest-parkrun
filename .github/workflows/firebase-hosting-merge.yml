@@ -22,6 +22,7 @@ jobs:
           file_name: .env
 
       - name: Test, Lint, & Build
+        using: 'node16'
         run: |
           npm ci
           npm run lint
