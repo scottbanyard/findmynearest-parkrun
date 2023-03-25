@@ -4,7 +4,7 @@
   "description": "A React application that will allow you to find your nearest parkrun event.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot --open",
+    "start": "webpack-dev-server",
     "build": "webpack --mode production",
     "test": "jest",
     "test:watch": "jest --watchAll --colors --verbose",
